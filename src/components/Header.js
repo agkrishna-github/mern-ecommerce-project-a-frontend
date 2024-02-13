@@ -68,16 +68,18 @@ const Header = () => {
                 </h5>
               </div>
             </Link>
-            <div className="flex justify-center items-center flex-wrap gap-2">
-              <img src={cart} alt="cart image" />
+            <Link to="/cart" className="no-underline text-white">
+              <div className="flex justify-center items-center flex-wrap gap-2">
+                <img src={cart} alt="cart image" />
 
-              <div className="flex flex-col flex-wrap gap-3">
-                <span className="text-center rounded p-1 bg-white text-black">
-                  0
-                </span>
-                <p>Rs. 500</p>
+                <div className="flex flex-col flex-wrap gap-3">
+                  <span className="text-center rounded p-1 bg-white text-black">
+                    0
+                  </span>
+                  <p>Rs. 500</p>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -92,7 +94,9 @@ const Header = () => {
           <Link to="/blog" className="no-underline text-white">
             <li>BLOGS</li>
           </Link>
-          <li>CONTACT</li>
+          <Link to="/contact" className="no-underline text-white">
+            <li>CONTACT</li>
+          </Link>
         </ul>
       </section>
     </header>

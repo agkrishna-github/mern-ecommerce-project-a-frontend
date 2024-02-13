@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const BlogCard = ({ blogs }) => {
   return (
@@ -14,9 +15,11 @@ const BlogCard = ({ blogs }) => {
           </div>
           <h4 className="py-2">{item.title}</h4>
           <p className="py-2">{item.description}</p>
-          <div className="mt-2">
-            <button className="button-btn">Read More</button>
-          </div>
+          <Link to={`/blog/${item._id}`}>
+            <div className="mt-2">
+              <button className="button-btn">Read More</button>
+            </div>
+          </Link>
         </div>
       ))}
     </div>

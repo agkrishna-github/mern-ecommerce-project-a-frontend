@@ -8,6 +8,10 @@ import OurStore from "./pages/OurStore";
 import RequireAuth from "./utils/RequireAuth";
 import Wishlist from "./pages/Wishlist";
 import Blog from "./pages/Blog";
+import SingleBlog from "./pages/Singleblog";
+import Contacts from "./pages/Contacts";
+import SingleProduct from "./pages/SingleProduct";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -18,8 +22,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="ourstore" element={<OurStore />} />
+          <Route path="product/:prodId" element={<SingleProduct />} />
           <Route path="wishlist" element={<Wishlist />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="blog/:id" element={<SingleBlog />} />
+          <Route path="contact" element={<Contacts />} />
+          <Route path="cart" element={<Cart />} />
         </Route>
       </Routes>
     </BrowserRouter>

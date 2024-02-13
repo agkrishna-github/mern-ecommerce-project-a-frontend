@@ -1,14 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import mainbanner from "../images/main-banner-1.jpg";
 import catbanner1 from "../images/catbanner-01.jpg";
 import catbanner2 from "../images/catbanner-02.jpg";
 import catbanner3 from "../images/catbanner-03.jpg";
 import catbanner4 from "../images/catbanner-04.jpg";
-import service from "../images/service.png";
-import service2 from "../images/service-02.png";
-import service3 from "../images/service-03.png";
-import service4 from "../images/service-04.png";
-import service5 from "../images/service-05.png";
 import brand1 from "../images/brand-01.png";
 import brand2 from "../images/brand-02.png";
 import brand3 from "../images/brand-03.png";
@@ -26,8 +21,54 @@ import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import ReactStars from "react-rating-stars-component";
 import Marquee from "react-fast-marquee";
+import { getAllProductsa } from "../features/product/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Services from "../components/Services";
+import service from "../images/service.png";
+import service2 from "../images/service-02.png";
+import service3 from "../images/service-03.png";
+import service4 from "../images/service-04.png";
+import SpecialProducts from "../components/SpecialProducts";
+import PopularProducts from "../components/PopularProducts";
+import FeaturedProduct from "../components/FeaturedProduct";
+// import service5 from "../images/service-05.png";
+
+const services = [
+  {
+    title: "Free shipping",
+    description: "From all orders over rs.50",
+    img: service,
+  },
+  {
+    title: "Free shipping",
+    description: "From all orders over rs.50",
+    img: service2,
+  },
+  {
+    title: "Free shipping",
+    description: "From all orders over rs.50",
+    img: service3,
+  },
+  {
+    title: "Free shipping",
+    description: "From all orders over rs.50",
+    img: service4,
+  },
+];
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const getProducts = () => {
+    dispatch(getAllProductsa());
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+  const productState = useSelector((state) => state.product.products);
+  console.log(productState);
+
   return (
     <>
       <section className="mb-16">
@@ -87,53 +128,7 @@ const Home = () => {
         </div>
       </section>
       <section className="bg-gray-300 flex justify-center items-center h-[300px]">
-        <div className="w-5/6 mx-auto flex justify-around items-center gap-10 p-5">
-          <div className="flex justify-center items-center gap-5">
-            <div>
-              <img src={service} alt="service" />
-            </div>
-            <div>
-              <h4 className="mb-4">Free Shipping</h4>
-              <p>From all orders over rs.50</p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center gap-5">
-            <div>
-              <img src={service2} alt="service" />
-            </div>
-            <div>
-              <h4 className="mb-4">Free Shipping</h4>
-              <p>From all orders over rs.50</p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center gap-5">
-            <div>
-              <img src={service3} alt="service" />
-            </div>
-            <div>
-              <h4 className="mb-4">Free Shipping</h4>
-              <p>From all orders over rs.50</p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center gap-5">
-            <div>
-              <img src={service4} alt="service" />
-            </div>
-            <div>
-              <h4 className="mb-4">Free Shipping</h4>
-              <p>From all orders over rs.50</p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center gap-5">
-            <div>
-              <img src={service5} alt="service" />
-            </div>
-            <div>
-              <h4 className="mb-4">Free Shipping</h4>
-              <p>From all orders over rs.50</p>
-            </div>
-          </div>
-        </div>
+        <Services services={services} />
       </section>
       <section className="bg-gray-300 min-h-[600px] flex justify-center items-center">
         <div className="w-5/6 mx-auto bg-white flex items-center flex-wrap gap-9 p-7 min-h-[500px]">
@@ -196,302 +191,13 @@ const Home = () => {
         </div>
       </section>
       <section className="bg-gray-300 pb-10">
-        <div className="w-5/6 mx-auto">
-          <h2 className="py-3 mb-4">Featured Collection</h2>
-          <div className="flex flex-wrap gap-3">
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-            <div className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]">
-              <button className="border-none absolute right-4 top-3 bg-transparent">
-                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
-              </button>
-              <div className="product-image">
-                <img src={watch} className="w-[250px] h-[250px]" alt="watch" />
-                <img src={watch1} className="w-[250px] h-[250px]" alt="watch" />
-              </div>
-              <h5>Havels</h5>
-              <p>Kids headphones bulk 10</p>
-              <ReactStars
-                count={5}
-                size={24}
-                value={4}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="price">rs. 100</p>
-              <div className="action-bar flex flex-col gap-5 absolute right-[-40px] top-12">
-                <button className="bg-transparent border-none">
-                  <img src={prodcompare} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={addcart} alt="" />
-                </button>
-                <button className="bg-transparent border-none">
-                  <img src={view} alt="" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <FeaturedProduct productState={productState} />
       </section>
       <section className="bg-gray-300 pb-20">
-        <div className="w-5/6 mx-auto">
-          <h2 className="pb-5">Special Products</h2>
-          <div className="flex flex-wrap gap-3">
-            <div className="bg-white flex p-5">
-              <div className="flex items-center justify-center">
-                <img src={watch} alt="watch" />
-              </div>
-              <div className="flex flex-col gap-4">
-                <h3>Havells</h3>
-                <h5>Samsung galaxy note 10.............</h5>
-                <ReactStars
-                  count={5}
-                  size={24}
-                  value={4}
-                  edit={false}
-                  activeColor="#ffd700"
-                />
-                <p>
-                  Rs. 100 <strike>Rs. 200</strike>
-                </p>
-                <p>
-                  <b>5</b> days :{" "}
-                </p>
-                <p>Products: 5</p>
-                <div>
-                  <button className="button-btn">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white flex p-5">
-              <div className="flex items-center justify-center">
-                <img src={watch} alt="watch" />
-              </div>
-              <div className="flex flex-col gap-4">
-                <h3>Havells</h3>
-                <h5>Samsung galaxy note 10.............</h5>
-                <ReactStars
-                  count={5}
-                  size={24}
-                  value={4}
-                  edit={false}
-                  activeColor="#ffd700"
-                />
-                <p>
-                  Rs. 100 <strike>Rs. 200</strike>
-                </p>
-                <p>
-                  <b>5</b> days :{" "}
-                </p>
-                <p>Products: 5</p>
-                <div>
-                  <button className="button-btn">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white flex p-5">
-              <div className="flex items-center justify-center">
-                <img src={watch} alt="watch" />
-              </div>
-              <div className="flex flex-col gap-4">
-                <h3>Havells</h3>
-                <h5>Samsung galaxy note 10.............</h5>
-                <ReactStars
-                  count={5}
-                  size={24}
-                  value={4}
-                  edit={false}
-                  activeColor="#ffd700"
-                />
-                <p>
-                  Rs. 100 <strike>Rs. 200</strike>
-                </p>
-                <p>
-                  <b>5</b> days :{" "}
-                </p>
-                <p>Products: 5</p>
-                <div>
-                  <button className="button-btn">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white flex p-5">
-              <div className="flex items-center justify-center">
-                <img src={watch} alt="watch" />
-              </div>
-              <div className="flex flex-col gap-4">
-                <h3>Havells</h3>
-                <h5>Samsung galaxy note 10.............</h5>
-                <ReactStars
-                  count={5}
-                  size={24}
-                  value={4}
-                  edit={false}
-                  activeColor="#ffd700"
-                />
-                <p>
-                  Rs. 100 <strike>Rs. 200</strike>
-                </p>
-                <p>
-                  <b>5</b> days :{" "}
-                </p>
-                <p>Products: 5</p>
-                <div>
-                  <button className="button-btn">Add to Cart</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SpecialProducts productState={productState} />;
+      </section>
+      <section className="bg-gray-300 pb-20">
+        <PopularProducts productState={productState} />;
       </section>
       <section>
         <div className="w-5/6 mx-auto p-1">

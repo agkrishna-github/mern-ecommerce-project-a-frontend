@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { base_url } from "../../utils/baseUrl";
+import { config } from "../../utils/axiosConfig";
 
 const initialState = {
   products: [],
@@ -10,15 +11,23 @@ const initialState = {
   message: "",
 };
 
-const getElementFromLocalStorage = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : null;
-
 export const getAllProductsa = createAsyncThunk(
   "products/getAllProductsa",
   async (data, thunkAPI) => {
     try {
       const response = await axios.get(`${base_url}product/`);
+      return response.data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getAproduct = createAsyncThunk(
+  "products/getAproduct",
+  async (prodId, thunkAPI) => {
+    try {
+      const response = await axios.get(`${base_url}product/${prodId}`);
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -33,16 +42,7 @@ export const addToWishlist = createAsyncThunk(
       const response = await axios.put(
         `${base_url}product/wishlist`,
         { prodId },
-        {
-          headers: {
-            Authorization: `Bearer ${
-              getElementFromLocalStorage !== null
-                ? getElementFromLocalStorage.token
-                : ""
-            }`,
-          },
-          accept: "application/json",
-        }
+        config
       );
       console.log(response.data);
       // return response?.data;
@@ -73,6 +73,21 @@ const productSlice = createSlice({
         state.isError = true;
         state.products = action.error;
       })
+      .addCase(getAproduct.pending, (state, action) => {
+        state.isLoding = true;
+      })
+      .addCase(getAproduct.fulfilled, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.singleProduct = action.payload;
+      })
+      .addCase(getAproduct.rejected, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.products = action.error;
+      })
       .addCase(addToWishlist.pending, (state, action) => {
         state.isLoding = true;
       })
@@ -87,7 +102,7 @@ const productSlice = createSlice({
         state.isLoding = false;
         state.isSuccess = false;
         state.isError = true;
-        state.products = action.error;
+        state.message = action.error;
       });
   },
 });

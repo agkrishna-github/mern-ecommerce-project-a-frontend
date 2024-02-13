@@ -10,7 +10,7 @@ import gr from "../images/gr.svg";
 const OurStore = () => {
   const [grid, setGrid] = useState(300);
   const dispatch = useDispatch();
-  const allProductsState = useSelector((state) => state.product.products);
+  const allProductsState = useSelector((state) => state.product.products) || [];
 
   useEffect(() => {
     getProducts();

@@ -23,10 +23,12 @@ export const getAllBlogs = createAsyncThunk(
 );
 
 export const getblog = createAsyncThunk(
-  "blogs/getAllBlogs",
-  async (thunkAPI) => {
+  "blogs/getblog",
+  async (blogId, thunkAPI) => {
+    console.log(blogId);
     try {
-      const response = await axios.get(`${base_url}blog/`);
+      const response = await axios.get(`${base_url}blog/${blogId}`);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -53,7 +55,22 @@ const blogSlice = createSlice({
         state.isLoding = false;
         state.isSuccess = false;
         state.isError = true;
-        state.products = action.error;
+        state.message = action.error;
+      })
+      .addCase(getblog.pending, (state, action) => {
+        state.isLoding = true;
+      })
+      .addCase(getblog.fulfilled, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.singleblog = action.payload;
+      })
+      .addCase(getblog.rejected, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
       });
   },
 });
