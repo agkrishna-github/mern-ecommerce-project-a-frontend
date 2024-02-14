@@ -35,7 +35,6 @@ export const login = createAsyncThunk(
     try {
       const response = await axios.post(`${base_url}user/login`, userData);
       localStorage.setItem("user", JSON.stringify(response.data));
-      console.log(response.data);
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -108,6 +107,23 @@ export const deleteUsercart = createAsyncThunk(
         `${base_url}user/deleteUsercart/${id}`,
         config
       );
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const createOrder = createAsyncThunk(
+  "auth/createOrder",
+  async (orderDetails, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${base_url}user/cart/create-order`,
+        orderDetails,
+        config
+      );
+      console.log(response.data);
+      // return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
     }
@@ -236,6 +252,22 @@ const authSlice = createSlice({
         state.message = "Cart Item Deleted";
       })
       .addCase(deleteUsercart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+      })
+      .addCase(createOrder.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.createdOrder = action.payload;
+        state.message = "Order Created succefully";
+      })
+      .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;

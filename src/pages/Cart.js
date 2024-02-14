@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { getUserCart } from "../features/user/userSlice";
-import { UpdateQuantity, deleteUsercart } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CartItem from "../components/CartItem";
+import { Link } from "react-router-dom";
 const Cart = () => {
   const dispatch = useDispatch();
 
-  const [qtyUpdateDetails, setQtyUpdateDetails] = useState(null);
-  const [quantity, setQuantity] = useState(null);
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     dispatch(getUserCart());
   }, []);
 
   const userCart = useSelector((state) => state.auth.userCart);
+
   useEffect(() => {
-    if (qtyUpdateDetails !== null) {
-      dispatch(UpdateQuantity(qtyUpdateDetails));
-    }
-    setTimeout(() => {
-      dispatch(getUserCart());
-    }, 200);
-  }, [qtyUpdateDetails]);
-
-  const deleteCartUser = (id) => {
-    dispatch(deleteUsercart(id));
-
-    setTimeout(() => {
-      dispatch(getUserCart());
-    }, 200);
-  };
+    let totalC = 0;
+    userCart?.forEach((item) => {
+      totalC += Number(item.price) * Number(item.quantity);
+    });
+    setTotal(totalC);
+  }, [userCart]);
 
   return (
     <main className="bg-gray-500 h-screen py-5">
@@ -40,64 +33,20 @@ const Cart = () => {
         </div>
         <div className="flex flex-col gap-16">
           {userCart &&
-            userCart?.map((item) => (
-              <div
-                className="grid grid-cols-[40%_15%_20%_15%] p-3 gap-10 justify-center items-center bg-white"
-                key={item?._id}
-              >
-                <div className="flex gap-2 items-center">
-                  <div className="w-[150px] h-[150px]">
-                    <img
-                      className="w-full h-full inline-block"
-                      src={item?.productId?.images[0]?.url}
-                      alt="product image"
-                    />
-                  </div>
-                  <div>
-                    <p>{item?.productId?.brand}</p>
-                    <p>Size: hgd</p>
-                    <p>
-                      Color:
-                      <span
-                        style={{
-                          backgroundColor: item?.color?.title,
-                          width: "50px",
-                          height: "50px",
-                          display: "inline-block",
-                        }}
-                      ></span>
-                    </p>
-                  </div>
-                </div>
-                <h5>Rs. {item?.price}</h5>
-                <div className="flex gap-10 items-center">
-                  <input
-                    type="number"
-                    className="w-16 h-10 text-2xl"
-                    value={
-                      qtyUpdateDetails?.quantity
-                        ? qtyUpdateDetails?.quantity
-                        : item?.quantity
-                    }
-                    onChange={(e) =>
-                      setQtyUpdateDetails({
-                        cartItemId: item?._id,
-                        quantity: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="p-2"
-                    onClick={() => deleteCartUser(item?._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-                <div className="">
-                  <h5>Rs. {item?.quantity * item?.price}</h5>
-                </div>
-              </div>
-            ))}
+            userCart?.map((item) => <CartItem item={item} key={item._id} />)}
+        </div>
+        <div className="flex justify-around items-center">
+          <Link to="/checkout">
+            <div className="w-[300px] p-5">
+              <button className="inline-block p-3 w-full bg-black text-white rounded-full">
+                Continue To Shopping
+              </button>
+            </div>
+          </Link>
+          <div className="border-all mb-10">
+            <h3 className="p-3">Sub Total : Rs. {total}</h3>
+            <p className="p-3">Taxes and shipping calculated at place order</p>
+          </div>
         </div>
       </section>
     </main>

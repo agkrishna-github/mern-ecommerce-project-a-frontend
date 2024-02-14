@@ -23,7 +23,7 @@ const FeaturedProduct = ({ productState }) => {
     <div className="w-5/6 mx-auto pt-10">
       <h2 className="py-3 mb-4">Featured Collection</h2>
       <div className="flex flex-wrap gap-3">
-        {featuredProducts.map((product) => (
+        {featuredProducts?.map((product) => (
           <div
             className="product-card relative bg-white flex flex-col justify-around gap-2 p-2 rounded ease-out duration-300 truncate w-[300px] min-h-[450px]"
             key={product._id}

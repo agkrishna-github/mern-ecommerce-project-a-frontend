@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import compare from "../images/compare.svg";
 import wishlist from "../images/wishlist.svg";
 import user from "../images/user.svg";
@@ -6,8 +6,26 @@ import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import { BsSearch } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { getUserCart } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, []);
+
+  const userCart = useSelector((state) => state?.auth?.userCart);
+
+  useEffect(() => {
+    let totalC = 0;
+    userCart?.forEach((item) => {
+      totalC += Number(item.price) * Number(item.quantity);
+    });
+    setTotal(totalC);
+  }, [userCart]);
   return (
     <header className="">
       <section className="bg-black text-white">
@@ -74,9 +92,9 @@ const Header = () => {
 
                 <div className="flex flex-col flex-wrap gap-3">
                   <span className="text-center rounded p-1 bg-white text-black">
-                    0
+                    {userCart?.length ? userCart?.length : "0"}
                   </span>
-                  <p>Rs. 500</p>
+                  <p>Rs. {total}</p>
                 </div>
               </div>
             </Link>

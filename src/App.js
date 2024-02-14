@@ -12,6 +12,7 @@ import SingleBlog from "./pages/Singleblog";
 import Contacts from "./pages/Contacts";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
+import CheckOut from "./pages/CheckOut";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="blog/:id" element={<SingleBlog />} />
           <Route path="contact" element={<Contacts />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<CheckOut />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactImageZoom from "react-image-zoom";
+// import ReactImageZoom from "react-image-zoom";
 import ReactStars from "react-rating-stars-component";
 import compare from "../images/compare.svg";
 import wish from "../images/wish.svg";
@@ -24,7 +24,7 @@ const SingleProduct = () => {
   }, []);
 
   const singleProduct = useSelector((state) => state?.product?.singleProduct);
-  const userCartState = useSelector((state) => state.auth.userCart);
+  const userCartState = useSelector((state) => state?.auth?.userCart);
 
   const [color, setColor] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -53,20 +53,27 @@ const SingleProduct = () => {
   };
 
   const props = {
-    width: 550,
+    /*     width: 550,
     height: 600,
     zoomWidth: 600,
-    // img: singleProduct?.images[0]?.url,
-    img: "https://rukminim2.flixcart.com/image/416/416/kokdci80/dslr-camera/v/e/x/z-24-200mm-z5-nikon-original-imag2zuekuxgxsgg.jpeg?q=70&crop=false",
+    img: singleProduct?.images[0]?.url,
+     img: "https://rukminim2.flixcart.com/image/416/416/kokdci80/dslr-camera/v/e/x/z-24-200mm-z5-nikon-original-imag2zuekuxgxsgg.jpeg?q=70&crop=false" */
   };
 
   return (
     <main className="bg-gray-500 py-10">
       <section className="bg-white w-5/6 mx-auto p-3 grid grid-cols-2 ">
         <div className="p-3">
-          <div className="">
-            <ReactImageZoom {...props} />
+          <div className="my-10 w-[500px] h-[500px]">
+            <img
+              src={singleProduct?.images[0]?.url}
+              className="w-full h-full"
+              alt=""
+            />
           </div>
+          {/* <div className="">
+            <ReactImageZoom {...props} />
+          </div> */}
           <div className="py-2 flex flex-wrap gap-2">
             <div className="w-[250px] h-[250px]">
               <img
@@ -113,7 +120,8 @@ const SingleProduct = () => {
               </ul>
 
               <div className={alreadyAddedtoCart ? "hidden" : ""}>
-                <h5>Color : </h5>
+                <h5 className="py-2">Color : </h5>
+                <b>Select Color</b>
                 <Color colorData={singleProduct?.color} setColor={setColor} />
               </div>
 
@@ -131,7 +139,11 @@ const SingleProduct = () => {
                   <button
                     className="p-3 inline-block rounded bg-black text-white"
                     onClick={() =>
-                      alreadyAddedtoCart ? navigate("/cart") : addToCart()
+                      color
+                        ? alreadyAddedtoCart
+                          ? navigate("/cart")
+                          : addToCart()
+                        : alert("Please select the color")
                     }
                   >
                     {alreadyAddedtoCart ? "Go To Cart" : "Add To Cart"}

@@ -66,7 +66,7 @@ const Home = () => {
   useEffect(() => {
     getProducts();
   }, []);
-  const productState = useSelector((state) => state.product.products);
+  const productState = useSelector((state) => state?.product?.products);
   console.log(productState);
 
   return (

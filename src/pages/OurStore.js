@@ -10,7 +10,7 @@ import gr from "../images/gr.svg";
 const OurStore = () => {
   const [grid, setGrid] = useState(300);
   const dispatch = useDispatch();
-  const allProductsState = useSelector((state) => state.product.products) || [];
+  const allProductsState = useSelector((state) => state?.product?.products);
 
   useEffect(() => {
     getProducts();
@@ -22,8 +22,8 @@ const OurStore = () => {
 
   return (
     <main className="bg-stone-300">
-      <div className="w-5/6 mx-auto grid grid-cols-[250px_1fr] gap-5 pt-12">
-        <div className="flex flex-col gap-3">
+      <section className="w-5/6 mx-auto grid grid-cols-[250px_1fr] gap-5 pt-12">
+        <aside className="flex flex-col gap-3">
           <div className="p-3  bg-white">
             <h3 className="mb-3">Shop By Category</h3>
             <ul className="list-none">
@@ -49,10 +49,10 @@ const OurStore = () => {
               </div>
             </form>
           </div>
-        </div>
+        </aside>
 
-        <section>
-          <div className="flex justify-between items-center bg-white py-4 px-2 mb-5 rounded">
+        <article>
+          <section className="flex justify-between items-center bg-white py-4 px-2 mb-5 rounded">
             <div className="flex justify-center items-center gap-5">
               <p className="p-2">Sort By:</p>
               <select
@@ -75,16 +75,18 @@ const OurStore = () => {
             <div>
               <p className="pe-5">21 Products</p>
             </div>
-          </div>
+          </section>
 
-          <div>
-            <ProductCard
-              data={allProductsState ? allProductsState : []}
-              grid={grid}
-            />
-          </div>
-        </section>
-      </div>
+          <section>
+            <div className="flex flex-wrap gap-5">
+              <ProductCard
+                data={allProductsState ? allProductsState : []}
+                grid={grid}
+              />
+            </div>
+          </section>
+        </article>
+      </section>
     </main>
   );
 };
