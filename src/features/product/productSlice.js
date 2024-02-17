@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { base_url } from "../../utils/baseUrl";
-import { config } from "../../utils/axiosConfig";
 
 const initialState = {
   products: [],
@@ -15,7 +14,15 @@ export const getAllProductsa = createAsyncThunk(
   "products/getAllProductsa",
   async (data, thunkAPI) => {
     try {
-      const response = await axios.get(`${base_url}product/`);
+      const response = await axios.get(
+        `${base_url}product?${data?.brand ? `brand=${data?.brand}&&` : ""}${
+          data?.tag ? `tags=${data?.tag}&&` : ""
+        }${data?.category ? `category=${data?.category}&&` : ""}${
+          data?.minPrice ? `price[gte]=${data?.minPrice}&&` : ""
+        }${data?.maxPrice ? `price[lte]=${data?.maxPrice}&&` : ""}${
+          data?.sort ? `sort=${data?.sort}&&` : ""
+        }`
+      );
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -38,14 +45,21 @@ export const getAproduct = createAsyncThunk(
 export const addToWishlist = createAsyncThunk(
   "products/addToWishlist",
   async (prodId, thunkAPI) => {
+    const { token } = JSON.parse(localStorage.getItem("user"));
+
     try {
       const response = await axios.put(
         `${base_url}product/wishlist`,
         { prodId },
-        config
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
       );
       console.log(response.data);
-      // return response?.data;
+      return response?.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
     }

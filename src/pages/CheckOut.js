@@ -4,7 +4,7 @@ import { getUserCart } from "../features/user/userSlice";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
-import { createOrder } from "../features/user/userSlice";
+import { createOrder, getUserOrders } from "../features/user/userSlice";
 
 const CheckOut = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,9 @@ const CheckOut = () => {
     dispatch(getUserCart());
   }, []);
 
-  const cartItemsState = useSelector((state) => state.auth.userCart);
+  const cartItemsState = useSelector((state) => state?.auth?.userCart);
+  const userOrderState = useSelector((state) => state?.auth?.orders);
+  console.log(userOrderState);
 
   useEffect(() => {
     let totalC = 0;
@@ -70,6 +72,10 @@ const CheckOut = () => {
         },
       })
     );
+
+    setTimeout(() => {
+      dispatch(getUserOrders());
+    }, 200);
   };
   /* 
   const loadScript = (src) => {
@@ -88,8 +94,8 @@ const CheckOut = () => {
       return {
         product: item?.productId?._id,
         quantity: item?.quantity,
-        color: item.color,
-        price: item.price,
+        color: item?.color,
+        price: item?.price,
       };
     });
     setCartProductState(items);
@@ -235,11 +241,11 @@ const CheckOut = () => {
             <Link className="button-btn w-[200px] no-underline" to="/cart">
               - Return To Cart
             </Link>
-            <button type="submit" className="button-btn">
+            <button type="button" className="button-btn">
               Continue To Shopping
             </button>
             <button
-              type="button"
+              type="submit"
               className="button-btn"
               //   onClick={() => checkOutHandler()}
             >

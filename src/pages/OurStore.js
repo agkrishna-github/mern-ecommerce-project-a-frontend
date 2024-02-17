@@ -2,23 +2,54 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsa } from "../features/product/productSlice";
 import ProductCard from "../components/ProductCard";
+import CategoryComp from "../components/CategoryComp";
+import TagComp from "../components/TagComp";
+
 import gr4 from "../images/gr4.svg";
 import gr3 from "../images/gr3.svg";
 import gr2 from "../images/gr2.svg";
 import gr from "../images/gr.svg";
+import BrandComp from "../components/BrandComp";
 
 const OurStore = () => {
-  const [grid, setGrid] = useState(300);
   const dispatch = useDispatch();
-  const allProductsState = useSelector((state) => state?.product?.products);
+
+  const [category, setCategory] = useState("");
+  const [tag, setTag] = useState("");
+  const [brand, setBrand] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [sort, tag, brand, category, minPrice, maxPrice]);
 
   const getProducts = () => {
-    dispatch(getAllProductsa());
+    dispatch(
+      getAllProductsa({ sort, tag, brand, category, minPrice, maxPrice })
+    );
   };
+
+  console.log(sort);
+
+  const allProductsState = useSelector((state) => state?.product?.products);
+
+  const allcategories = [
+    ...new Set(
+      allProductsState && allProductsState?.map((item) => item?.category)
+    ),
+  ];
+
+  const allTags = [
+    ...new Set(allProductsState && allProductsState?.map((item) => item?.tags)),
+  ];
+
+  const allBrands = [
+    ...new Set(
+      allProductsState && allProductsState?.map((item) => item?.brand)
+    ),
+  ];
 
   return (
     <main className="bg-stone-300">
@@ -27,27 +58,53 @@ const OurStore = () => {
           <div className="p-3  bg-white">
             <h3 className="mb-3">Shop By Category</h3>
             <ul className="list-none">
-              <li className="mb-2">Watch</li>
-              <li className="mb-2">Tv</li>
-              <li className="mb-2">Camera</li>
-              <li className="mb-2">Laptop</li>
+              {allcategories?.map((item, index) => (
+                <CategoryComp
+                  category={item}
+                  key={index}
+                  setCategory={setCategory}
+                />
+              ))}
             </ul>
           </div>
           <div className="p-3 flex flex-col bg-white gap-5">
             <h3>Filter By</h3>
-            <h4>Availability</h4>
-            <form action="">
-              <div className="mb-3">
-                <input type="checkbox" id="instock" />
-                &nbsp;
-                <label htmlFor="instock">In Stock [1]</label>
+            <h4>Price</h4>
+            <div className="mb-3 flex gap-3">
+              <div className="p-1">
+                <label>From</label>
+                <input
+                  type="number"
+                  className="p-3 w-24 mt-5"
+                  id="instock"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                />
               </div>
-              <div>
-                <input type="checkbox" id="outofstock" />
-                &nbsp;
-                <label htmlFor="outofstock">Out Of Stock [0]</label>
+              <div className="p-1">
+                <label>To</label>
+                <input
+                  type="number"
+                  className="p-3 w-24 mt-5"
+                  id="instock"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                />
               </div>
-            </form>
+            </div>
+
+            <h3>Product Tags</h3>
+            <ul className="p-3 list-none flex gap-3 flex-wrap">
+              {allTags?.map((item, index) => (
+                <TagComp tag={item} key={index} setTag={setTag} />
+              ))}
+            </ul>
+            <h3>Product Brands</h3>
+            <ul className="p-3 list-none flex gap-3 flex-wrap">
+              {allBrands?.map((item, index) => (
+                <BrandComp brand={item} key={index} setBrand={setBrand} />
+              ))}
+            </ul>
           </div>
         </aside>
 
@@ -57,32 +114,30 @@ const OurStore = () => {
               <p className="p-2">Sort By:</p>
               <select
                 name=""
-                defaultValue={"DEFAULT"}
+                defaultValue={"manual"}
                 className="p-2 rounded"
                 id=""
+                onChange={(e) => setSort(e.target.value)}
               >
-                <option disabled value="DEFAULT"></option>
-                <option value="manual">Featured</option>
-                <option value="best-selling">Best Selling</option>
-                <option value="title-ascending">Alphabetically, A-Z</option>
-                <option value="title-descending">Alphabetically, Z-A</option>
-                <option value="price-ascending">Price, low to high</option>
-                <option value="price-descending">Price, high to low</option>
-                <option value="created-ascending">Date, old to new</option>
-                <option value="created-descending">Date, new to old</option>
+                <option value="title">Alphabetically, A-Z</option>
+                <option value="-title">Alphabetically, Z-A</option>
+                <option value="price">Price, low to high</option>
+                <option value="-price">Price, high to low</option>
+                <option value="createdAt">Date, old to new</option>
+                <option value="-createdAt">Date, new to old</option>
               </select>
             </div>
             <div>
-              <p className="pe-5">21 Products</p>
+              {/* <p className="pe-5">{categories?.length} Products</p> */}
             </div>
           </section>
 
           <section>
             <div className="flex flex-wrap gap-5">
-              <ProductCard
-                data={allProductsState ? allProductsState : []}
-                grid={grid}
-              />
+              {allProductsState &&
+                allProductsState?.map((item) => (
+                  <ProductCard product={item} key={item._id} />
+                ))}
             </div>
           </section>
         </article>

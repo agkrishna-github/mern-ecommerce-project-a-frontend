@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../features/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const authState = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,12 +15,17 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(
-      login({
-        email: email,
-        password: password,
-      })
-    );
+    if (email && password) {
+      dispatch(
+        login({
+          email: email,
+          password: password,
+        })
+      );
+    } else {
+      alert("Email and password required");
+    }
+
     navigate("/");
     setEmail("");
     setPassword("");

@@ -31,6 +31,7 @@ import service4 from "../images/service-04.png";
 import SpecialProducts from "../components/SpecialProducts";
 import PopularProducts from "../components/PopularProducts";
 import FeaturedProduct from "../components/FeaturedProduct";
+import { getUserCart } from "../features/user/userSlice";
 // import service5 from "../images/service-05.png";
 
 const services = [
@@ -59,16 +60,15 @@ const services = [
 const Home = () => {
   const dispatch = useDispatch();
 
-  const getProducts = () => {
-    dispatch(getAllProductsa());
-  };
-
   useEffect(() => {
     getProducts();
   }, []);
-  const productState = useSelector((state) => state?.product?.products);
-  console.log(productState);
+  const getProducts = () => {
+    dispatch(getAllProductsa());
+    dispatch(getUserCart());
+  };
 
+  const productState = useSelector((state) => state?.product?.products);
   return (
     <>
       <section className="mb-16">

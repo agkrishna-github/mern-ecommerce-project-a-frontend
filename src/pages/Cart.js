@@ -9,11 +9,14 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    dispatch(getUserCart());
+    getAllUserCart();
   }, []);
 
-  const userCart = useSelector((state) => state.auth.userCart);
+  const getAllUserCart = () => {
+    dispatch(getUserCart());
+  };
 
+  const userCart = useSelector((state) => state?.auth?.userCart);
   useEffect(() => {
     let totalC = 0;
     userCart?.forEach((item) => {

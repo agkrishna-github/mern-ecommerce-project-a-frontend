@@ -7,28 +7,23 @@ import { addToWishlist } from "../features/product/productSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const userWishList =
-    useSelector((state) => state?.auth?.wishlist?.wishlist) || [];
-
   useEffect(() => {
-    getwishlist();
+    dispatch(getUserProductWishlist());
   }, []);
 
-  const getwishlist = () => {
-    dispatch(getUserProductWishlist());
-  };
+  const userWishList = useSelector((state) => state?.auth?.wishlist?.wishlist);
 
   const removefromWishlist = (id) => {
     dispatch(addToWishlist(id));
     setTimeout(() => {
       dispatch(getUserProductWishlist());
-    }, [300]);
+    }, 300);
   };
 
   return (
     <div className="bg-slate-400 min-h-screen py-10">
       <div className="w-5/6 mx-auto flex flex-wrap gap-10">
-        {userWishList.length === 0 && (
+        {userWishList?.length === 0 && (
           <div className="bg-white w-full p-5 text-center">No Data</div>
         )}
         {userWishList?.map((item) => (
@@ -47,15 +42,15 @@ const Wishlist = () => {
             </div>
             <div className="w-[250px] h-[250px]">
               <img
-                src={item.images[0].url || watch}
+                src={item?.images[0]?.url || watch}
                 alt="watch img"
                 className="w-[100%] h-[100%]"
               />
             </div>
             <div>
-              <h4 className="py-2">{item.title}</h4>
-              <h5 className="py-2 leading-normal">{item.description}</h5>
-              <h6 className="py-2">{item.price}</h6>
+              <h4 className="py-2">{item?.title}</h4>
+              <h5 className="py-2 leading-normal">{item?.description}</h5>
+              <h6 className="py-2">{item?.price}</h6>
             </div>
           </div>
         ))}

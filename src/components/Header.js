@@ -5,19 +5,29 @@ import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import { BsSearch } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getUserCart } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
+  const [profile, setProfile] = useState(true);
+  const [auth, setAuth] = useState(false);
+  const navigate = useNavigate();
 
+  const authState = useSelector((state) => state?.auth);
   useEffect(() => {
     dispatch(getUserCart());
   }, []);
 
   const userCart = useSelector((state) => state?.auth?.userCart);
+
+  const logOutHandler = () => {
+    localStorage.clear();
+    window.location.reload();
+    navigate("/login");
+  };
 
   useEffect(() => {
     let totalC = 0;
@@ -25,7 +35,7 @@ const Header = () => {
       totalC += Number(item.price) * Number(item.quantity);
     });
     setTotal(totalC);
-  }, [userCart]);
+  }, []);
   return (
     <header className="">
       <section className="bg-black text-white">
@@ -61,7 +71,7 @@ const Header = () => {
               </span>
             </div>
           </div>
-          <div className="flex justify-between items-center flex-wrap gap-5">
+          <div className="flex justify-between items-center flex-wrap gap-5 relative">
             <div className="flex justify-center items-center flex-wrap gap-2">
               <img src={compare} alt="compare image" />
 
@@ -77,15 +87,25 @@ const Header = () => {
                 </h5>
               </Link>
             </div>
-            <Link to="/login" className="no-underline text-white">
-              <div className="flex justify-center items-center flex-wrap gap-2">
+            <Link
+              to={authState?.user !== null ? "" : "/login"}
+              className="no-underline text-white"
+            >
+              <div className="flex justify-center items-center flex-wrap gap-2 relative">
                 <img src={user} alt="user image" />
 
-                <h5>
-                  Log In <br /> My Account
-                </h5>
+                {authState?.user !== null ? (
+                  <h5>
+                    Welcome <br /> {authState?.user?.firstname}
+                  </h5>
+                ) : (
+                  <h5>
+                    Log In <br /> My Account
+                  </h5>
+                )}
               </div>
             </Link>
+
             <Link to="/cart" className="no-underline text-white">
               <div className="flex justify-center items-center flex-wrap gap-2">
                 <img src={cart} alt="cart image" />
@@ -101,21 +121,32 @@ const Header = () => {
           </div>
         </div>
       </section>
-      <section className="bg-slate-700 text-white">
-        <ul className="w-5/6 mx-auto list-none flex items-center gap-5 flex-wrap min-h-14">
-          <Link to="/" className="no-underline text-white">
-            <li>HOME</li>
-          </Link>
-          <Link to="/ourstore" className="no-underline text-white">
-            <li>OUR STORE</li>
-          </Link>
-          <Link to="/blog" className="no-underline text-white">
-            <li>BLOGS</li>
-          </Link>
-          <Link to="/contact" className="no-underline text-white">
-            <li>CONTACT</li>
-          </Link>
-        </ul>
+      <section className="bg-slate-700 text-white ">
+        <div className="w-5/6 mx-auto flex gap-10 items-center">
+          <ul className="list-none flex items-center gap-5 flex-wrap min-h-14">
+            <Link to="/" className="no-underline text-white">
+              <li>HOME</li>
+            </Link>
+            <Link to="/ourstore" className="no-underline text-white">
+              <li>OUR STORE</li>
+            </Link>
+            <Link to="/blog" className="no-underline text-white">
+              <li>BLOGS</li>
+            </Link>
+            <Link to="/contact" className="no-underline text-white">
+              <li>CONTACT</li>
+            </Link>
+            <Link to="/orders" className="no-underline text-white">
+              <li>MY ORDERS</li>
+            </Link>
+          </ul>
+          <div
+            className="bg-white text-black rounded p-2  h-10 cursor-pointer"
+            onClick={() => logOutHandler()}
+          >
+            Logout
+          </div>
+        </div>
       </section>
     </header>
   );

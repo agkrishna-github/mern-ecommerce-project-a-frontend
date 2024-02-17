@@ -36,12 +36,12 @@ const FeaturedProduct = ({ productState }) => {
             </button>
             <div className="product-image">
               <img
-                src={product.images[0].url}
+                src={product?.images[0]?.url}
                 className="w-[250px] h-[250px]"
                 alt="watch"
               />
               <img
-                src={product.images[0].url}
+                src={product?.images[0]?.url}
                 className="w-[250px] h-[250px]"
                 alt="watch"
               />

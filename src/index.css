@@ -35,6 +35,23 @@ body, input {
 .border-all {
   border: 1px solid black !important;
 }
+
+.border-b-white {
+  border-bottom: 1px solid white !important;
+}
+.border-t-white {
+  border-top: 1px solid white !important;
+}
+.border-s-white {
+  border-left: 1px solid white !important;
+}
+.border-e-white {
+  border-right: 1px solid white !important;
+}
+
+.border-all-white {
+  border: 1px solid white !important;
+}
 .border-none {
   border: none !important;
 }

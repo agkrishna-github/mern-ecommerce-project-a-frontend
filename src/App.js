@@ -13,23 +13,27 @@ import Contacts from "./pages/Contacts";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route element={<RequireAuth />}>
+            <Route path="ourstore" element={<OurStore />} />
+            <Route path="product/:prodId" element={<SingleProduct />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="blog/:id" element={<SingleBlog />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<CheckOut />} />
+            <Route path="orders" element={<Orders />} />
+          </Route>
           <Route path="login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="ourstore" element={<OurStore />} />
-          <Route path="product/:prodId" element={<SingleProduct />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="blog" element={<Blog />} />
-          <Route path="blog/:id" element={<SingleBlog />} />
           <Route path="contact" element={<Contacts />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckOut />} />
+          <Route path="signup" element={<SignUp />} />
         </Route>
       </Routes>
     </BrowserRouter>
