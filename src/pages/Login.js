@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, seterrorMsg] = useState(null);
 
   const authState = useSelector((state) => state.auth);
 
@@ -23,39 +24,48 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (email && password) {
+    const moRegex = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
+    let messageerr;
+
+    if (!email && !password) {
+      messageerr = "All Fields are Required";
+    } else if (!email) {
+      messageerr = "Email Required";
+    } else if (!password) {
+      messageerr = "Password Required";
+    } else {
+      messageerr = null;
+    }
+
+    seterrorMsg(messageerr);
+
+    if (messageerr === null) {
       dispatch(
         login({
           email: email,
           password: password,
         })
       );
-    } else {
-      alert("Email and password required");
-    }
 
-    setEmail("");
-    setPassword("");
+      setEmail("");
+      setPassword("");
+      return;
+    }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col gap-7 border-all p-5 w-[400px] h-[400px] rounded">
         <h2 className="text-center">Login</h2>
-        {/*  {userError?.isError === true ? (
-          <div className={email || password ? "hidden" : ""}>
-            {userError?.message}
-          </div>
-        ) : (
-          ""
-        )} */}
+        {errorMsg && (
+          <p className=" p-2 bg-red-500 text-white">{errorMsg && errorMsg}</p>
+        )}
         <form onSubmit={submitHandler} className="flex flex-col gap-7">
           <input
             type="email"
             placeholder="Email"
             className="outline-0 p-3 rounded"
             value={email}
-            required
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
@@ -63,7 +73,6 @@ const Login = () => {
             placeholder="Password"
             className="outline-0 p-3 rounded"
             value={password}
-            required
             onChange={(e) => setPassword(e.target.value)}
           />
 

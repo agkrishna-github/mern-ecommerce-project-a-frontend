@@ -9,6 +9,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, seterrorMsg] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,36 +17,66 @@ const SignUp = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(
-      registerUser({
-        firstname: firstName,
-        lastname: lastName,
-        email: email,
-        mobile: mobileNumber,
-        password: password,
-      })
-    );
+    const moRegex = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
 
-    navigate("/login");
+    let messageerr;
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setMobileNumber("");
-    setPassword("");
+    if (!firstName && !lastName && !email && !mobileNumber && !password) {
+      messageerr = "All Fields are Required";
+    } else if (!moRegex.test(mobileNumber)) {
+      messageerr = "Mobile number is not valie";
+    } else if (!firstName) {
+      messageerr = "First Name Required";
+    } else if (!mobileNumber) {
+      messageerr = "Mobile Number Required";
+    } else if (!lastName) {
+      messageerr = "Last Name Required";
+    } else if (!email) {
+      messageerr = "Email Required";
+    } else if (!password) {
+      messageerr = "Password Required";
+    } else {
+      messageerr = null;
+    }
+
+    seterrorMsg(messageerr);
+
+    if (messageerr === null) {
+      dispatch(
+        registerUser({
+          firstname: firstName,
+          lastname: lastName,
+          email: email,
+          mobile: mobileNumber,
+          password: password,
+        })
+      );
+
+      navigate("/login");
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setMobileNumber("");
+      setPassword("");
+    }
+    return;
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col gap-7 border-all p-5 w-[400px] min-h-[400px] rounded">
         <h2 className="text-center">Sign Up</h2>
+        {errorMsg && (
+          <p className=" p-2 bg-red-500 text-white">{errorMsg && errorMsg}</p>
+        )}
+
         <form onSubmit={submitHandler} className="flex flex-col gap-7">
           <input
             type="text"
             placeholder="First Name"
             className="outline-0 p-3 rounded"
             value={firstName}
-            required
             onChange={(e) => setFirstName(e.target.value)}
           />
           <input
@@ -53,7 +84,6 @@ const SignUp = () => {
             placeholder="Last Name"
             className="outline-0 p-3 rounded"
             value={lastName}
-            required
             onChange={(e) => setLastName(e.target.value)}
           />
           <input
