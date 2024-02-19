@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProductsa } from "../features/product/productSlice";
+import {
+  getAllProductsa,
+  getFilteredProducts,
+} from "../features/product/productSlice";
 import ProductCard from "../components/ProductCard";
 import CategoryComp from "../components/CategoryComp";
 import TagComp from "../components/TagComp";
@@ -14,26 +17,39 @@ import BrandComp from "../components/BrandComp";
 const OurStore = () => {
   const dispatch = useDispatch();
 
-  const [category, setCategory] = useState("");
-  const [tag, setTag] = useState("");
-  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState(null);
+  const [tag, setTag] = useState(null);
+  const [brand, setBrand] = useState(null);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState(null);
 
   useEffect(() => {
     getProducts();
-  }, [sort, tag, brand, category, minPrice, maxPrice]);
+  }, []);
 
   const getProducts = () => {
-    dispatch(
-      getAllProductsa({ sort, tag, brand, category, minPrice, maxPrice })
-    );
+    dispatch(getAllProductsa());
   };
 
-  console.log(sort);
-
   const allProductsState = useSelector((state) => state?.product?.products);
+  const searchProductList = useSelector(
+    (state) => state?.product?.searchProductList
+  );
+  const filterProductList = useSelector(
+    (state) => state?.product?.filterProductsList
+  );
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    dispatch(
+      getFilteredProducts({ category, tag, brand, minPrice, maxPrice, sort })
+    );
+  }, [category, tag, brand, minPrice, maxPrice, sort]);
+
+  useEffect(() => {
+    setProducts(filterProductList);
+  }, [filterProductList]);
 
   const allcategories = [
     ...new Set(
@@ -105,6 +121,14 @@ const OurStore = () => {
                 <BrandComp brand={item} key={index} setBrand={setBrand} />
               ))}
             </ul>
+            <div className="p-3">
+              <button
+                className="p-2 border-all inline-block w-full"
+                onClick={() => window.location.reload()}
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
         </aside>
 
@@ -119,6 +143,7 @@ const OurStore = () => {
                 id=""
                 onChange={(e) => setSort(e.target.value)}
               >
+                <option value="">Select</option>
                 <option value="title">Alphabetically, A-Z</option>
                 <option value="-title">Alphabetically, Z-A</option>
                 <option value="price">Price, low to high</option>
@@ -128,16 +153,22 @@ const OurStore = () => {
               </select>
             </div>
             <div>
-              {/* <p className="pe-5">{categories?.length} Products</p> */}
+              <p className="pe-5">
+                {products?.length ? products?.length : allProductsState?.length}{" "}
+                Products
+              </p>
             </div>
           </section>
 
           <section>
             <div className="flex flex-wrap gap-5">
-              {allProductsState &&
-                allProductsState?.map((item) => (
-                  <ProductCard product={item} key={item._id} />
-                ))}
+              {products?.length
+                ? products?.map((item) => (
+                    <ProductCard product={item} key={item?._id} />
+                  ))
+                : allProductsState?.map((item) => (
+                    <ProductCard product={item} key={item?._id} />
+                  ))}
             </div>
           </section>
         </article>

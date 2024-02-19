@@ -8,20 +8,33 @@ import { BsSearch } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserCart } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { searchProducts } from "../features/product/productSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
   const [profile, setProfile] = useState(true);
   const [auth, setAuth] = useState(false);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (search) {
+      dispatch(searchProducts(search));
+    }
+  }, [search]);
+
+  const searchProductList = useSelector(
+    (state) => state?.product?.searchProductsList
+  );
+  console.log(searchProductList);
   const authState = useSelector((state) => state?.auth);
+
   useEffect(() => {
     dispatch(getUserCart());
   }, []);
 
-  const userCart = useSelector((state) => state?.auth?.userCart);
+  const { userCart } = useSelector((state) => state?.auth);
 
   const logOutHandler = () => {
     localStorage.clear();
@@ -36,6 +49,12 @@ const Header = () => {
     });
     setTotal(totalC);
   }, []);
+
+  const getAproduct = (id) => {
+    navigate(`product/${id}`);
+    setSearch("");
+  };
+
   return (
     <header className="">
       <section className="bg-black text-white">
@@ -51,17 +70,19 @@ const Header = () => {
       </section>
       <section className="bg-black text-white">
         <div className="w-5/6 mx-auto flex justify-between flex-wrap min-h-28">
-          <div className="flex justify-center items-center flex-wrap">
+          <div className="flex justify-center items-center flex-wrap ">
             <Link to="/" className="no-underline text-white">
-              <h1 className="py-2 pe-2 me-5">Krish Corner</h1>
+              <h1 className="py-2 pe-2 me-5 ">Krish Corner</h1>
             </Link>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap relative">
               <input
                 type="text"
                 className="p-3 w-80 outline-none"
                 placeholder="Search Product Here..."
                 aria-label="Search Product Here..."
                 aria-describedby="basic-addon2"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <span
                 className="text-lg p-2 bg-amber-500 text-white"
@@ -69,6 +90,24 @@ const Header = () => {
               >
                 <BsSearch className="text-lg" />
               </span>
+              <div
+                className={
+                  search
+                    ? "p-3 border-all w-[400px] min-h-[50px] absolute top-8 left-0 bg-white last:[border-bottom:none]"
+                    : "hidden"
+                }
+              >
+                {searchProductList &&
+                  searchProductList?.map((product) => (
+                    <div
+                      className="p-1 border-bottom text-black cursor-pointer "
+                      key={product?._id}
+                      onClick={() => getAproduct(product?._id)}
+                    >
+                      {product?.title.substring(0, 40)}
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
           <div className="flex justify-between items-center flex-wrap gap-5 relative">

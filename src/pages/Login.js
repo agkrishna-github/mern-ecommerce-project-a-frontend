@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../features/user/userSlice";
+import { getUserCart, login } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
@@ -8,6 +8,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const authState = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (authState.user !== null) {
+      dispatch(getUserCart());
+
+      navigate("/");
+    }
+  }, [authState]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +34,6 @@ const Login = () => {
       alert("Email and password required");
     }
 
-    navigate("/");
     setEmail("");
     setPassword("");
   };
@@ -35,6 +42,13 @@ const Login = () => {
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col gap-7 border-all p-5 w-[400px] h-[400px] rounded">
         <h2 className="text-center">Login</h2>
+        {/*  {userError?.isError === true ? (
+          <div className={email || password ? "hidden" : ""}>
+            {userError?.message}
+          </div>
+        ) : (
+          ""
+        )} */}
         <form onSubmit={submitHandler} className="flex flex-col gap-7">
           <input
             type="email"
