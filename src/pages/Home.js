@@ -16,7 +16,7 @@ import camera from "../images/camera.jpg";
 import watch from "../images/watch.jpg";
 import watch1 from "../images/watch-1.jpg";
 import wish from "../images/wish.svg";
-import prodcompare from "../images/prodcompare.svg";
+
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 import ReactStars from "react-rating-stars-component";
@@ -32,7 +32,19 @@ import SpecialProducts from "../components/SpecialProducts";
 import PopularProducts from "../components/PopularProducts";
 import FeaturedProduct from "../components/FeaturedProduct";
 import { getUserCart } from "../features/user/userSlice";
-// import service5 from "../images/service-05.png";
+import {
+  getHomepageDetails,
+  getHomepageSubDetails,
+} from "../features/homepage/homepageSlice";
+import { Carousel, Popover } from "antd";
+
+const contentStyle = {
+  height: "160px",
+  color: "#fff",
+  lineHeight: "160px",
+  textAlign: "center",
+  background: "#364d79",
+};
 
 const services = [
   {
@@ -57,6 +69,13 @@ const services = [
   },
 ];
 
+const content = (
+  <div>
+    <p>Content</p>
+    <p>Content</p>
+  </div>
+);
+
 const Home = () => {
   const dispatch = useDispatch();
 
@@ -69,128 +88,84 @@ const Home = () => {
   };
 
   const productState = useSelector((state) => state?.product?.products);
+  const homePageDetailsState =
+    useSelector((state) => state?.homePageDetails?.homeDetails?.homeDetails) ||
+    [];
+  const homePageSubDetailsState =
+    useSelector((state) => state?.homePageDetails?.homeSubDetails) || [];
+
+  useEffect(() => {
+    dispatch(getHomepageDetails());
+    dispatch(getHomepageSubDetails());
+  }, []);
+
   return (
     <>
-      <section className="mb-16">
-        <div className=" w-5/6 mx-auto grid  grid-cols-2 mt-16 relative">
-          <img
-            src={mainbanner}
-            className="object-cover w-[600px] rounded h-[400px]"
-            alt="main banner"
-          />
-          <div className="absolute p-5 flex flex-col gap-6 mt-7">
-            <p className="text-red-400">SUPERCHARGED FOR PROS</p>
-            <h2 className="text-4xl ">iPad S13+ Pro.</h2>
-            <p>From rs.900 or</p>
+      <section className="bg-blue-300 py-20">
+        <div className=" w-[90%] mx-auto grid  grid-cols-2 relative gap-5">
+          <div className="relative shadow-md shadow-black bg-white rounded-md overflow-hidden">
+            <Carousel autoplay>
+              <div className="w-full rounded h-[400px]">
+                <img
+                  src={homePageDetailsState[0]?.images[0]}
+                  className="w-[300px]"
+                  alt="main banner"
+                />
+              </div>
+              <div className="w-[400px] rounded h-[400px]">
+                <img
+                  src={homePageDetailsState[0]?.images[1]}
+                  className="w-[300px]"
+                  alt="main banner"
+                />
+              </div>
+              <div className="w-[400px] rounded h-[400px]">
+                <img
+                  src={homePageDetailsState[0]?.images[2]}
+                  className="w-[300px]"
+                  alt="main banner"
+                />
+              </div>
+            </Carousel>
+            <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 ">
+              <p className="text-red-400">
+                {homePageDetailsState[0]?.description.substring(0, 35)}
+              </p>
+              <h2>{homePageDetailsState[0]?.title}</h2>
+              <p>
+                From &nbsp;
+                <span>{homePageDetailsState[0]?.price}</span>
+                &nbsp; or
+              </p>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <div className="relative">
-              <img src={catbanner1} className="w-[300px] h-[200px]" />
-              <div className="absolute top-0 left-0 flex flex-col gap-6 mt-7">
-                <p className="text-red-400">SUPERCHARGED FOR PROS</p>
-                <h2>iPad S13+ Pro.</h2>
-                <p>From rs.900 or</p>
-              </div>
-            </div>
-            <div className="relative">
-              <img src={catbanner2} className="w-[300px] h-[200px]" />
-              <div className="absolute top-0 left-0 flex flex-col gap-6 mt-7">
-                <p className="text-red-400">SUPERCHARGED FOR PROS</p>
-                <h2>iPad S13+ Pro.</h2>
-                <p>From rs.900 or</p>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src={catbanner3}
-                className="w-[300px] h-[200px]"
-                alt="cat banner"
-              />
-              <div className="absolute top-0 left-0 flex flex-col gap-6 mt-7">
-                <p className="text-red-400">SUPERCHARGED FOR PROS</p>
-                <h2>iPad S13+ Pro.</h2>
-                <p>From rs.900 or</p>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src={catbanner4}
-                className="w-[300px] h-[200px]"
-                alt="cat banner"
-              />
-              <div className="absolute top-0 left-0 flex flex-col gap-6 mt-7">
-                <p className="text-red-400">SUPERCHARGED FOR PROS</p>
-                <h2>iPad S13+ Pro.</h2>
-                <p>From rs.900 or</p>
-              </div>
-            </div>
+
+          <div className="flex flex-wrap gap-8 bg-blue-950 justify-center items-center rounded-md overflow-hidden">
+            {homePageSubDetailsState &&
+              homePageSubDetailsState?.homeSubDetails?.map((item) => (
+                <div
+                  className="rounded-lg overflow-hidden  flex gap-3 shadow-sm shadow-black relative cursor-pointer subDetailsImg"
+                  key={item._id}
+                >
+                  <div className="w-[250px] h-[200px]">
+                    <img src={item?.images} className="w-full h-full" />
+                  </div>
+
+                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails">
+                    <p className="text-red-400">{item?.subdescription}</p>
+                    <h2>{item?.subtitle}</h2>
+                    <p>From Rs. {item?.subprice} or</p>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>
       <section className="bg-gray-300 flex justify-center items-center h-[300px]">
         <Services services={services} />
       </section>
-      <section className="bg-gray-300 min-h-[600px] flex justify-center items-center">
-        <div className="w-5/6 mx-auto bg-white flex items-center flex-wrap gap-9 p-7 min-h-[500px]">
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-          <div className="flex justify-center items-center gap-4 border-bottom border-right pe-2 pb-2">
-            <div>
-              <h5>Music & Gaming</h5>
-              <p>10 Items</p>
-            </div>
-            <img src={camera} className="w-[130px] h-[150px]" alt="" />
-          </div>
-        </div>
-      </section>
-      <section className="bg-gray-300 pb-10">
+
+      <section className="bg-gray-200 pb-10">
         <FeaturedProduct productState={productState} />
       </section>
       <section className="bg-gray-300 pb-20">

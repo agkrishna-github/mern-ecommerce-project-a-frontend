@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import compare from "../images/compare.svg";
+
 import wishlist from "../images/wishlist.svg";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
@@ -27,7 +27,6 @@ const Header = () => {
   const searchProductList = useSelector(
     (state) => state?.product?.searchProductsList
   );
-  console.log(searchProductList);
   const authState = useSelector((state) => state?.auth);
 
   useEffect(() => {
@@ -56,25 +55,15 @@ const Header = () => {
   };
 
   return (
-    <header className="">
-      <section className="bg-black text-white">
-        <div className="w-5/6 mx-auto flex justify-between flex-wrap items-center min-h-12">
-          <p>Free shipping over Rs.100 & Free returns</p>
-          <p className="">
-            Hotline : &nbsp;
-            <a className="text-white no-underline" href="tel:+91 999999999">
-              +91 999999999
-            </a>
-          </p>
-        </div>
-      </section>
-      <section className="bg-black text-white">
-        <div className="w-5/6 mx-auto flex justify-between flex-wrap min-h-28">
-          <div className="flex justify-center items-center flex-wrap ">
-            <Link to="/" className="no-underline text-white">
-              <h1 className="py-2 pe-2 me-5 ">Krish Corner</h1>
+    <header className="bg-[#1565C0]">
+      <section className="bg-black text-white"></section>
+      <section className="">
+        <div className="grid grid-cols-2 ">
+          <div className="flex justify-center py-10 -skew-x-[25deg] items-center flex-wrap bg-white text-black">
+            <Link to="/" className="no-underline">
+              <h1 className="py-2 pe-2 me-5 ">Krish Cart</h1>
             </Link>
-            <div className="flex flex-wrap relative">
+            <div className="flex flex-wrap relative skew-x-[25deg]">
               <input
                 type="text"
                 className="p-3 w-80 outline-none"
@@ -110,27 +99,20 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center flex-wrap gap-5 relative">
-            <div className="flex justify-center items-center flex-wrap gap-2">
-              <img src={compare} alt="compare image" />
-
-              <h5>
-                Compare <br /> Products
-              </h5>
-            </div>
-            <div className="flex justify-center items-center flex-wrap gap-2">
+          <div className="flex justify-center items-center  flex-wrap gap-5 -skew-x-[25deg] relative bg-[#1565C0]">
+            <div className="flex justify-center items-center flex-wrap gap-2 profile-img skew-x-[25deg]">
               <img src={wishlist} alt="wishlist image" />
-              <Link to="/wishlist" className="text-white no-underline">
-                <h5>
+              <Link to="/wishlist" className=" no-underline">
+                <h5 className="text-white">
                   Favorite <br /> Wishlist
                 </h5>
               </Link>
             </div>
             <Link
               to={authState?.user !== null ? "" : "/login"}
-              className="no-underline text-white"
+              className="no-underline"
             >
-              <div className="flex justify-center items-center flex-wrap gap-2 relative">
+              <div className="flex justify-center items-center flex-wrap gap-2 relative border-all p-3 profile text-white border-all-white skew-x-[25deg]">
                 <img src={user} alt="user image" />
 
                 {authState?.user !== null ? (
@@ -145,15 +127,21 @@ const Header = () => {
               </div>
             </Link>
 
-            <Link to="/cart" className="no-underline text-white">
-              <div className="flex justify-center items-center flex-wrap gap-2">
+            <Link to="/cart" className="no-underline ">
+              <div
+                className={
+                  authState?.user !== null
+                    ? "flex justify-center items-center flex-wrap gap-2 px-3 border-all-white skew-x-[25deg]"
+                    : "hidden"
+                }
+              >
                 <img src={cart} alt="cart image" />
 
                 <div className="flex flex-col flex-wrap gap-3">
-                  <span className="text-center rounded p-1 bg-white text-black">
+                  <span className="text-center bg-[#F59E0B] text-white rounded p-1">
                     {userCart?.length ? userCart?.length : "0"}
                   </span>
-                  <p>Rs. {total}</p>
+                  <p className="text-white">Rs. {total}</p>
                 </div>
               </div>
             </Link>
@@ -180,7 +168,11 @@ const Header = () => {
             </Link>
           </ul>
           <div
-            className="bg-white text-black rounded p-2  h-10 cursor-pointer"
+            className={
+              authState?.user !== null
+                ? "bg-white text-black rounded p-2  h-10 cursor-pointer"
+                : "hidden"
+            }
             onClick={() => logOutHandler()}
           >
             Logout

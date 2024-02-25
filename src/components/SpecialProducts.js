@@ -1,53 +1,91 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
-import ProgressBar from "./Progressbar";
+
+import wish from "../images/wish.svg";
+
+import addcart from "../images/add-cart.svg";
+import view from "../images/view.svg";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToWishlist } from "../features/product/productSlice";
+import { prodAddToCart } from "../features/user/userSlice";
 
 const SpecialProducts = ({ productState }) => {
-  const specialProducts = productState?.filter(
+  const SpecialProductsState = productState?.filter(
     (product) => product.tags === "special"
   );
 
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   return (
-    <div className="w-5/6 mx-auto py-5">
-      <h2 className="pb-5">Special Products</h2>
+    <div className="w-5/6 mx-auto pt-10">
+      <h2 className="py-3 mb-4">special Products</h2>
       <div className="flex flex-wrap gap-5">
-        {specialProducts &&
-          specialProducts?.map((item) => (
-            <div className=" " key={item._id}>
-              <div className="bg-white p-5 min-h-[550px] w-[350px]">
-                <div className="flex justify-center items-center  ">
-                  <div className="w-[250px] h-[250px]">
-                    <img
-                      src={item.images[0].url}
-                      alt="watch"
-                      className="h-full w-full"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-5 pt-5">
-                  <h3>{item.brand}</h3>
-                  <h5>{item.title}</h5>
-                  <ReactStars
-                    count={5}
-                    size={24}
-                    value={4}
-                    edit={false}
-                    activeColor="#ffd700"
-                  />
-                  <p>
-                    Rs. {item.price} <strike>Rs. 200</strike>
-                  </p>
-                  <p>
-                    <b>5</b> days :
-                  </p>
-                  <p>Products: {item.quantity}</p>
-                  <div className="">
-                    <ProgressBar item={item} />
-                  </div>
-                  <div>
-                    <button className="button-btn">Add to Cart</button>
-                  </div>
-                </div>
+        {SpecialProductsState &&
+          SpecialProductsState?.map((product) => (
+            <div
+              className="product-card relative bg-white flex flex-col justify-around gap-3 p-5 rounded ease-out duration-300 truncate w-[380px] min-h-[600px] shadow-2xl shadow-black"
+              key={product._id}
+            >
+              <button
+                className="border-none absolute right-4 top-3 bg-transparent cursor-pointer"
+                title="Add To Wish List"
+                onClick={() => dispatch(addToWishlist(product._id))}
+              >
+                <img src={wish} alt="wishlist" className="w-[20px] h-[20px]" />
+              </button>
+              <div className="h-[200px] w-[200px]">
+                <img
+                  src={product?.images[0]?.url}
+                  className="w-full h-full"
+                  alt="watch"
+                />
+                {/* <img
+                  src={product?.images[0]?.url}
+                  className="w-[250px] h-[250px]"
+                  alt="watch"
+                /> */}
+              </div>
+              <h5 className="text-wrap">{product?.title}</h5>
+              <p className="text-wrap">
+                {product.description.substring(0, 40)}...
+              </p>
+              <ReactStars
+                count={5}
+                size={24}
+                value={product?.totalratings}
+                edit={false}
+                activeColor="#ffd700"
+              />
+              <p>Rs. {product?.price}</p>
+
+              <p>Products: {product?.quantity}</p>
+
+              <div>
+                <button
+                  className="button-btn cursor-pointer"
+                  onClick={() => navigate(`/product/${product._id}`)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+
+              <div className="action-bar flex flex-col gap-5 mt-3 absolute right-[-40px] top-12">
+                <button
+                  className="bg-transparent border-none cursor-pointer"
+                  title="Add to Cart"
+                >
+                  <img src={addcart} alt="Add to Cart Image" />
+                </button>
+                <button
+                  className="bg-transparent border-none cursor-pointer"
+                  title="View product"
+                  onClick={() => navigate(`/product/${product._id}`)}
+                >
+                  <img src={view} alt="View Image" />
+                </button>
               </div>
             </div>
           ))}

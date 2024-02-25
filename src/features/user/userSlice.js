@@ -4,7 +4,7 @@ import { base_url } from "../../utils/baseUrl";
 import { toast } from "react-toastify";
 
 const initialState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -58,7 +58,7 @@ export const prodAddToCart = createAsyncThunk(
   "auth/prodAddToCart",
   async (cartProduct, thunkAPI) => {
     const { auth } = thunkAPI.getState();
-
+    console.log(cartProduct);
     try {
       const response = await axios.post(
         `${base_url}user/createUserCart`,
@@ -70,6 +70,7 @@ export const prodAddToCart = createAsyncThunk(
           },
         }
       );
+
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -99,11 +100,19 @@ export const getUserCart = createAsyncThunk(
 export const UpdateQuantity = createAsyncThunk(
   "auth/UpdateQuantity",
   async (qutUpdate, thunkAPI) => {
+    const { auth } = thunkAPI.getState();
     try {
       const response = await axios.put(
         `${base_url}user/cartQtyUpdate/${qutUpdate?.cartItemId}`,
-        qutUpdate
+        qutUpdate,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user.token}`,
+            Accept: "application/json",
+          },
+        }
       );
+      return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
     }
@@ -113,9 +122,16 @@ export const UpdateQuantity = createAsyncThunk(
 export const deleteUsercart = createAsyncThunk(
   "auth/deleteUsercart",
   async (id, thunkAPI) => {
+    const { auth } = thunkAPI.getState();
     try {
       const response = await axios.delete(
-        `${base_url}user/deleteUsercart/${id}`
+        `${base_url}user/deleteUsercart/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user.token}`,
+            Accept: "application/json",
+          },
+        }
       );
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -126,11 +142,19 @@ export const deleteUsercart = createAsyncThunk(
 export const createOrder = createAsyncThunk(
   "auth/createOrder",
   async (orderDetails, thunkAPI) => {
+    const { auth } = thunkAPI.getState();
     try {
       const response = await axios.post(
         `${base_url}user/cart/create-order`,
-        orderDetails
+        orderDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user.token}`,
+            Accept: "application/json",
+          },
+        }
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       thunkAPI.rejectWithValue(error);
@@ -141,8 +165,33 @@ export const createOrder = createAsyncThunk(
 export const getUserOrders = createAsyncThunk(
   "auth/getUserOrders",
   async (orderDetails, thunkAPI) => {
+    const { auth } = thunkAPI.getState();
     try {
-      const response = await axios.get(`${base_url}user/cart/getallorders`);
+      const response = await axios.get(`${base_url}user/cart/getallorders`, {
+        headers: {
+          Authorization: `Bearer ${auth?.user?.token}`,
+          Accept: "application/json",
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const clearUserCart = createAsyncThunk(
+  "auth/clearUserCart",
+  async (id, thunkAPI) => {
+    const { auth } = thunkAPI.getState();
+    try {
+      const response = await axios.get(`${base_url}user/cart/clearorders`, {
+        headers: {
+          Authorization: `Bearer ${auth.user.token}`,
+          Accept: "application/json",
+        },
+      });
       console.log(response.data);
 
       return response.data;
@@ -187,6 +236,7 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.user = action.payload;
+        localStorage?.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;

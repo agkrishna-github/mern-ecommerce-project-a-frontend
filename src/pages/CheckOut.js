@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserCart } from "../features/user/userSlice";
+import { getUserCart, clearUserCart } from "../features/user/userSlice";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
@@ -17,7 +17,6 @@ const CheckOut = () => {
   const [country, setCountry] = useState("");
   const [other, setOther] = useState("");
   const [pincode, setPincode] = useState("");
-  //   const [totalAmount, setTotalAmount] = useState(null);
   const [totalAmount, setTotalAmount] = useState(50000);
   const [paymentInfo, setPaymentInfo] = useState({
     razorpayPaymentId: "545454165659898",
@@ -40,8 +39,6 @@ const CheckOut = () => {
 
   const cartItemsState = useSelector((state) => state?.auth?.userCart);
   const userOrderState = useSelector((state) => state?.auth?.orders);
-  console.log(userOrderState);
-
   useEffect(() => {
     let totalC = 0;
     cartItemsState?.forEach((item) => {
@@ -49,8 +46,6 @@ const CheckOut = () => {
     });
     setTotal(totalC);
   }, [cartItemsState]);
-
-  useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,8 +68,20 @@ const CheckOut = () => {
       })
     );
 
+    setTotal(0);
+    setFirstName("");
+    setLastName("");
+    setAddress("");
+    setCity("");
+    setState("");
+    setCountry("");
+    setOther("");
+    setPincode("");
+
     setTimeout(() => {
       dispatch(getUserOrders());
+      // dispatch(clearUserCart());
+      dispatch(getUserCart());
     }, 200);
   };
   /* 
@@ -91,11 +98,14 @@ const CheckOut = () => {
  */
   useEffect(() => {
     const items = cartItemsState?.map((item) => {
+      console.log(item);
       return {
-        product: item?.productId?._id,
+        product: item?._id,
+        title: item?.productId?.title,
         quantity: item?.quantity,
-        color: item?.color,
+        color: item?.color?._id,
         price: item?.price,
+        image: item?.productId?.images[0]?.url,
       };
     });
     setCartProductState(items);
@@ -173,7 +183,7 @@ const CheckOut = () => {
       <section className="p-3 w-11/12 mx-auto grid grid-cols-[50%_50%]">
         <article className="p-3">
           <h2 className="py-2">Contact Information</h2>
-          <p className="py-2">krishna@gmail.com</p>
+          <p className="py-2">krishcart@gmail.com</p>
           <h2 className="py-2">Shipping Address</h2>
           <form onSubmit={handleSubmit} className="py-2 grid grid-cols-2 gap-5">
             <select
@@ -247,33 +257,30 @@ const CheckOut = () => {
             <button
               type="submit"
               className="button-btn"
-              //   onClick={() => checkOutHandler()}
+              // onClick={() => checkOutHandler()}
             >
               Place Order
             </button>
           </form>
         </article>
+
         <article className="p-5">
-          {cartItemsState &&
-            cartItemsState?.map((item) => (
+          {cartProductState &&
+            cartProductState?.map((item) => (
               <section
-                className="p-3 flex gap-2 justify-around items-center mt-3 mb-3"
-                key={item?._id}
+                className="p-3 flex gap-2 justify-around items-center mt-3 mb-3 shadow-sm shadow-black"
+                key={item?.id}
               >
                 <div className="flex gap">
                   <div className="flex gap-3 w-[100px] h-[100px] relative">
-                    <img
-                      src={item?.productId?.images[0]?.url}
-                      alt=""
-                      className="w-full h-full"
-                    />
+                    <img src={item?.image} alt="" className="w-full h-full" />
                     <span className="absolute -top-4 rounded-2xl right-0 bg-black text-white p-2">
                       {item?.quantity}
                     </span>
                   </div>
                   <div className="p-3 w-[400px]">
-                    <p className="p-3">{item?.productId?.title}</p>
-                    <p className="p-3">{item?.color?.title}</p>
+                    <p className="p-3">{item?.title}</p>
+                    <p className="p-3">{item?.color}</p>
                   </div>
                 </div>
                 <div>
@@ -290,9 +297,9 @@ const CheckOut = () => {
             <p className="p-2">Shipping</p>
             <p className="p-2">Rs. 5</p>
           </div>
-          <div className="flex p-2 justify-between">
-            <p className="p-2">Total</p>
-            <p className="p-2">Rs. {total + 5}</p>
+          <div className="flex p-2 justify-between border-all">
+            <h4 className="p-2">Total</h4>
+            <h4 className="p-2">Rs. {total + 5}</h4>
           </div>
         </article>
       </section>

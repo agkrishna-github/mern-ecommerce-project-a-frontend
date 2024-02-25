@@ -46,12 +46,20 @@ export const getAproduct = createAsyncThunk(
 export const addToWishlist = createAsyncThunk(
   "products/addToWishlist",
   async (prodId, thunkAPI) => {
-    const { token } = JSON.parse(localStorage.getItem("user"));
-
+    const { auth } = thunkAPI.getState();
     try {
-      const response = await axios.put(`${base_url}product/wishlist`, {
-        prodId,
-      });
+      const response = await axios.put(
+        `${base_url}product/wishlist`,
+        {
+          prodId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user.token}`,
+            Accept: "application/json",
+          },
+        }
+      );
       console.log(response.data);
       return response?.data;
     } catch (error) {
@@ -89,13 +97,45 @@ export const getFilteredProducts = createAsyncThunk(
 export const searchProducts = createAsyncThunk(
   "products/searchProducts",
   async (searchData, thunkAPI) => {
-    // const { token } = JSON.parse(localStorage.getItem("user"));
+    const { auth } = thunkAPI.getState();
 
     try {
       const response = await axios.get(
-        `${base_url}product/search/${searchData}`
+        `${base_url}product/search/${searchData}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.user.token}`,
+            Accept: "application/json",
+          },
+        }
       );
       console.log(response.data);
+      return response?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const addRatings = createAsyncThunk(
+  "products/addRatings",
+  async (ratingData, thunkAPI) => {
+    const { star, comment, prodId } = ratingData;
+
+    const { auth } = thunkAPI?.getState();
+
+    try {
+      const response = await axios.post(
+        `${base_url}product/rating`,
+        ratingData,
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.user?.token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
       return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -182,6 +222,21 @@ const productSlice = createSlice({
         state.message = "Filter Product List";
       })
       .addCase(getFilteredProducts.rejected, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+      })
+      .addCase(addRatings.pending, (state, action) => {
+        state.isLoding = true;
+      })
+      .addCase(addRatings.fulfilled, (state, action) => {
+        state.isLoding = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.ratedProduct = action.payload;
+      })
+      .addCase(addRatings.rejected, (state, action) => {
         state.isLoding = false;
         state.isSuccess = false;
         state.isError = true;

@@ -1,6 +1,7 @@
 import React from "react";
 
 const Color = ({ colorData, setColor }) => {
+  console.log(colorData);
   return (
     <div className="flex gap-10 p-3 my-3">
       {colorData &&

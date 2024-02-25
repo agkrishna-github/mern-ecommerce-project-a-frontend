@@ -3,6 +3,7 @@ import authReducer from "../features/user/userSlice";
 import productReducer from "../features/product/productSlice";
 import blogReducer from "../features/blog/blogSlice";
 import enquiryReducer from "../features/enquiry/enquirySlice";
+import homePageReducer from "../features/homepage/homepageSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     product: productReducer,
     blog: blogReducer,
     enquiry: enquiryReducer,
+    homePageDetails: homePageReducer,
   },
 });

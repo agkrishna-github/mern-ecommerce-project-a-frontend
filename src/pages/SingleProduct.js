@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 // import ReactImageZoom from "react-image-zoom";
 import ReactStars from "react-rating-stars-component";
-import compare from "../images/compare.svg";
+
 import wish from "../images/wish.svg";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAproduct } from "../features/product/productSlice";
+import {
+  getAproduct,
+  addRatings,
+  getAllProductsa,
+} from "../features/product/productSlice";
 import { prodAddToCart, getUserCart } from "../features/user/userSlice";
 import Color from "../components/Color";
 
@@ -15,19 +19,29 @@ const SingleProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [rating, setRating] = useState(0);
+
   useEffect(() => {
-    dispatch(getAproduct(prodId));
+    // dispatch(getAproduct(prodId));
+    dispatch(getAllProductsa());
   }, [prodId]);
 
   useEffect(() => {
     dispatch(getUserCart());
   }, []);
 
-  const singleProduct = useSelector((state) => state?.product?.singleProduct);
+  // const singleProduct = useSelector((state) => state?.product?.singleProduct);
+  const productState = useSelector((state) => state?.product?.products);
   const userCartState = useSelector((state) => state?.auth?.userCart);
 
   const [color, setColor] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [star, setStar] = useState();
+  const [comment, setComment] = useState("");
+
+  const singleProduct = productState?.find((product) => product._id === prodId);
+
+  console.log(singleProduct);
 
   const alreadyAddedtoCart = userCartState?.find(
     (item) => item?.productId?._id === prodId
@@ -60,6 +74,31 @@ const SingleProduct = () => {
      img: "https://rukminim2.flixcart.com/image/416/416/kokdci80/dslr-camera/v/e/x/z-24-200mm-z5-nikon-original-imag2zuekuxgxsgg.jpeg?q=70&crop=false" */
   };
 
+  const addRatingToProduct = () => {
+    /* if (star == null) {
+      alert("Please select a star rating");
+      return;
+    } else if (!comment) {
+      alert("Please write a comment");
+      return;
+    } else {
+      dispatch(addRatings({ star, comment, prodId }));
+      return;
+    } */
+
+    dispatch(addRatings({ star, comment, prodId }));
+
+    setTimeout(() => {
+      dispatch(getAllProductsa());
+    }, 200);
+  };
+
+  const productSubmit = () => {
+    if (!alreadyAddedtoCart && color === "")
+      return alert("Please select color");
+    alreadyAddedtoCart ? navigate("/cart") : addToCart();
+  };
+
   return (
     <main className="bg-gray-500 py-10">
       <section className="bg-white w-5/6 mx-auto p-3 grid grid-cols-2 ">
@@ -90,7 +129,7 @@ const SingleProduct = () => {
             <ReactStars
               count={5}
               size={24}
-              value={4}
+              value={singleProduct?.totalratings}
               edit={false}
               activeColor="#ffd700"
             />
@@ -138,13 +177,7 @@ const SingleProduct = () => {
                 <div className="flex gap-10 items-center justify-center p-3">
                   <button
                     className="p-3 inline-block rounded bg-black text-white"
-                    onClick={() =>
-                      color
-                        ? alreadyAddedtoCart
-                          ? navigate("/cart")
-                          : addToCart()
-                        : alert("Please select the color")
-                    }
+                    onClick={productSubmit}
                   >
                     {alreadyAddedtoCart ? "Go To Cart" : "Add To Cart"}
                   </button>
@@ -156,10 +189,6 @@ const SingleProduct = () => {
                 </div>
               </div>
               <div className="p-5 flex gap-3">
-                <div className="p-2 cursor-pointer">
-                  <img src="" alt="c" className="mx-2" />
-                  <small>Add to compare</small>
-                </div>
                 <div className="p-2 cursor-pointer">
                   <img src={wish} alt="" className="mx-2" />
                   <small>Add to Wishlist</small>
@@ -193,23 +222,26 @@ const SingleProduct = () => {
                 <ReactStars
                   count={5}
                   size={24}
-                  value={4}
+                  value={singleProduct?.totalratings}
                   edit={false}
                   activeColor="#ffd700"
                 />
               </div>
-              <small className="p-3">Based on 2 reviews</small>
+              <small className="p-3">
+                Based on {singleProduct?.totalratings?.length} reviews
+              </small>
             </div>
             <hr className="w-11/12 mx-auto my-3" />
             <div>
               <h5 className="p-3">Write a Review</h5>
-              <form onSubmit={submitHandler} className="p-3">
+              <div className="p-3">
                 <ReactStars
                   count={5}
                   size={24}
-                  value={4}
-                  edit={false}
+                  value={0}
+                  edit={true}
                   activeColor="#ffd700"
+                  onChange={(e) => setStar(e)}
                 />
                 <div>
                   <textarea
@@ -218,14 +250,41 @@ const SingleProduct = () => {
                     cols="30"
                     rows="5"
                     className="w-full p-3 my-3"
+                    onChange={(e) => setComment(e.target.value)}
                   ></textarea>
                 </div>
                 <div className="flex justify-end p-3">
-                  <button type="submit" className="button-btn">
+                  <button
+                    type="button"
+                    className="button-btn"
+                    onClick={addRatingToProduct}
+                  >
                     Submit Reviews
                   </button>
                 </div>
-              </form>
+              </div>
+            </div>
+            <div>
+              {singleProduct?.ratings.map((rating) => (
+                <div key={rating?._id}>
+                  <h3>Review By : {rating?.postedBy?.firstname}</h3>
+                  <ReactStars
+                    count={5}
+                    size={24}
+                    value={rating?.star}
+                    edit={false}
+                    activeColor="#ffd700"
+                  />
+                  <h3
+                    style={{
+                      borderBottom: "3px solid black",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {rating?.comment}
+                  </h3>
+                </div>
+              ))}
             </div>
           </div>
         </div>
