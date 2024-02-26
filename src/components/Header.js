@@ -104,8 +104,8 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center items-center sm:w-full flex-wrap gap-5 -skew-x-[25deg] sm:skew-x-[0deg] relative bg-[#1565C0] sm:fixed sm:bottom-0 sm:z-50">
-            <div className="flex justify-center items-center flex-wrap gap-2 profile-img skew-x-[25deg] sm:-skew-x-[0deg]">
+          <div className="flex justify-center items-center sm:w-full flex-wrap gap-5 sm:gap-2 -skew-x-[25deg] sm:skew-x-[0deg] relative bg-[#1565C0] sm:fixed sm:bottom-0 sm:z-50">
+            <div className="flex justify-center items-center flex-wrap gap-2 sm:gap-1 profile-img skew-x-[25deg] sm:-skew-x-[0deg]">
               <img src={wishlist} alt="wishlist image" />
               <Link to="/wishlist" className=" no-underline">
                 <h5 className="text-white">
@@ -117,7 +117,7 @@ const Header = () => {
               to={authState?.user !== null ? "" : "/login"}
               className="no-underline"
             >
-              <div className="flex justify-center items-center flex-wrap gap-2 relative border-all p-3 profile text-white border-all-white skew-x-[25deg] sm:-skew-x-[0deg]">
+              <div className="flex justify-center items-center flex-wrap gap-2 sm:gap-1 relative border-all p-3 profile text-white border-all-white skew-x-[25deg] sm:-skew-x-[0deg]">
                 <img src={user} alt="user image" />
 
                 {authState?.user !== null ? (
@@ -136,7 +136,7 @@ const Header = () => {
               <div
                 className={
                   authState?.user !== null
-                    ? "flex justify-center items-center flex-wrap gap-2 px-3 border-all-white skew-x-[25deg] sm:-skew-x-[0deg]"
+                    ? "flex justify-center items-center flex-wrap gap-2 sm:gap-1 px-3 sm:px-2 border-all-white skew-x-[25deg] sm:-skew-x-[0deg]"
                     : "hidden"
                 }
               >
