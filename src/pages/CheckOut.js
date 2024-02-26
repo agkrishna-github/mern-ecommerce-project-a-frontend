@@ -98,7 +98,6 @@ const CheckOut = () => {
  */
   useEffect(() => {
     const items = cartItemsState?.map((item) => {
-      console.log(item);
       return {
         product: item?._id,
         title: item?.productId?.title,
@@ -180,7 +179,7 @@ const CheckOut = () => {
  */
   return (
     <main>
-      <section className="p-3 w-11/12 mx-auto grid grid-cols-[50%_50%]">
+      <section className="p-3 w-11/12 mx-auto grid grid-cols-[50%_50%] sm:flex sm:flex-col">
         <article className="p-3">
           <h2 className="py-2">Contact Information</h2>
           <p className="py-2">krishcart@gmail.com</p>
@@ -268,10 +267,10 @@ const CheckOut = () => {
           {cartProductState &&
             cartProductState?.map((item) => (
               <section
-                className="p-3 flex gap-2 justify-around items-center mt-3 mb-3 shadow-sm shadow-black"
+                className="p-3 flex gap-2 justify-around items-center mt-3 mb-3 shadow-sm shadow-black sm:flex-col"
                 key={item?.id}
               >
-                <div className="flex gap">
+                <div className="flex gap sm:flex-col sm:p-5">
                   <div className="flex gap-3 w-[100px] h-[100px] relative">
                     <img src={item?.image} alt="" className="w-full h-full" />
                     <span className="absolute -top-4 rounded-2xl right-0 bg-black text-white p-2">
@@ -297,7 +296,7 @@ const CheckOut = () => {
             <p className="p-2">Shipping</p>
             <p className="p-2">Rs. 5</p>
           </div>
-          <div className="flex p-2 justify-between border-all">
+          <div className="flex p-2 justify-between border-all sm:mb-10">
             <h4 className="p-2">Total</h4>
             <h4 className="p-2">Rs. {total + 5}</h4>
           </div>

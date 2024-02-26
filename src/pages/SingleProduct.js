@@ -101,9 +101,9 @@ const SingleProduct = () => {
 
   return (
     <main className="bg-gray-500 py-10">
-      <section className="bg-white w-5/6 mx-auto p-3 grid grid-cols-2 ">
+      <section className="bg-white w-5/6 mx-auto p-3 grid grid-cols-2 sm:grid-cols-1 ">
         <div className="p-3">
-          <div className="my-10 w-[500px] h-[500px]">
+          <div className="my-10 w-[500px] h-[500px] sm:hidden">
             <img
               src={singleProduct?.images[0]?.url}
               className="w-full h-full"
@@ -114,7 +114,7 @@ const SingleProduct = () => {
             <ReactImageZoom {...props} />
           </div> */}
           <div className="py-2 flex flex-wrap gap-2">
-            <div className="w-[250px] h-[250px]">
+            <div className="w-[250px] h-[250px] ">
               <img
                 src={singleProduct?.images[0]?.url}
                 className="w-full h-full"

@@ -33,7 +33,7 @@ const Cart = () => {
         </section>
       ) : (
         <section className="w-5/6 mx-auto my-5 p-3 bg-white">
-          <div className="grid grid-cols-[40%_15%_20%_15%] py-10 justify-center bg-white">
+          <div className="grid grid-cols-[40%_15%_20%_15%] py-10 justify-center bg-white sm:hidden">
             <h4>Product</h4>
             <h4>Price</h4>
             <h4>Quantity</h4>
@@ -43,17 +43,17 @@ const Cart = () => {
             {userCart &&
               userCart?.map((item) => <CartItem item={item} key={item._id} />)}
           </div>
-          <div className="flex justify-around items-center">
+          <div className="flex justify-around items-center sm:flex-col-reverse sm:mt-28">
             <Link to="/ourstore">
               <div className="w-[300px] p-1">
-                <button className="inline-block p-2 w-full bg-black text-white rounded-full cursor-pointer">
+                <button className="inline-block p-2 w-full bg-black text-white rounded-full cursor-pointer sm:p-5">
                   Continue To Shopping
                 </button>
               </div>
             </Link>
             <Link to="/checkout">
               <div className="w-[300px] p-1 ">
-                <button className="inline-block p-2 w-full bg-black text-white rounded-full cursor-pointer">
+                <button className="inline-block p-2 w-full bg-black text-white rounded-full cursor-pointer sm:p-5">
                   Place Order
                 </button>
               </div>

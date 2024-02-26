@@ -26,7 +26,7 @@ const Contacts = () => {
   };
 
   return (
-    <section className="bg-gray-500 min-h-screen py-12">
+    <section className="bg-[#1565C0] min-h-screen py-12">
       <div className="w-5/6 mx-auto p-5 bg-white">
         <div className="flex justify-center items-center gap-5 py-10">
           <div className="w-[800px] h-[500px]">
@@ -41,7 +41,7 @@ const Contacts = () => {
             ></iframe>
           </div>
         </div>
-        <div className="flex w-5/6 mx-auto justify-around">
+        <div className="flex w-5/6 mx-auto justify-around sm:flex-col sm:gap-5">
           <div className="my-5">
             <h3 className="contact-title mb-4">Contact</h3>
             <form className="flex flex-col gap-5" onSubmit={submitHandler}>

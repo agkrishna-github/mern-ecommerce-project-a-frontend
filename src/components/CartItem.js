@@ -26,7 +26,7 @@ const CartItem = ({ item }) => {
 
   return (
     <div
-      className="grid grid-cols-[40%_15%_20%_15%] p-3 gap-10 justify-center items-center bg-white"
+      className="grid grid-cols-[40%_15%_20%_15%] p-3 gap-10 justify-center items-center bg-white sm:grid-cols-1 sm:border-b-2 sm:mb-5"
       key={item?._id}
     >
       <div className="flex gap-2 items-center">
@@ -78,6 +78,7 @@ const CartItem = ({ item }) => {
       <div className="">
         <h5>Rs. {item?.quantity * item?.price}</h5>
       </div>
+      <div className="w-full h-2 bg-black"></div>
     </div>
   );
 };

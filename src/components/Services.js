@@ -6,7 +6,7 @@ const Services = (props) => {
     <div className="w-5/6 mx-auto flex justify-around items-center gap-10 p-5">
       {services &&
         services.map((service, index) => (
-          <div className="flex justify-center items-center gap-5" key={index}>
+          <div className="flex justify-center items-center  gap-5" key={index}>
             <div>
               <img src={service.img} alt="service" />
             </div>

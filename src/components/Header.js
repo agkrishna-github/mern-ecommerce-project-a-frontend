@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserCart } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProducts } from "../features/product/productSlice";
+import { IoMenuSharp } from "react-icons/io5";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Header = () => {
   const [profile, setProfile] = useState(true);
   const [auth, setAuth] = useState(false);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +25,10 @@ const Header = () => {
       dispatch(searchProducts(search));
     }
   }, [search]);
+
+  const hideHandler = () => {
+    setOpen(!open);
+  };
 
   const searchProductList = useSelector(
     (state) => state?.product?.searchProductsList
@@ -56,17 +62,16 @@ const Header = () => {
 
   return (
     <header className="bg-[#1565C0]">
-      <section className="bg-black text-white"></section>
-      <section className="">
-        <div className="grid grid-cols-2 ">
-          <div className="flex justify-center py-10 -skew-x-[25deg] items-center flex-wrap bg-white text-black">
+      <section className="ps-16 sm:ps-0 ">
+        <div className="grid grid-cols-2 sm:grid-cols-1 sm:relative">
+          <div className="flex justify-center items-center flex-wrap sm:flex-col py-10 -skew-x-[25deg] sm:skew-x-0  bg-white text-black">
             <Link to="/" className="no-underline">
-              <h1 className="py-2 pe-2 me-5 ">Krish Cart</h1>
+              <h1 className="py-2 pe-2 me-5">Krish Cart</h1>
             </Link>
-            <div className="flex flex-wrap relative skew-x-[25deg]">
+            <div className="flex flex-wrap relative skew-x-[25deg] sm:skew-x-0 sm:my-10">
               <input
                 type="text"
-                className="p-3 w-80 outline-none"
+                className="p-3 w-80 outline-none sm:w-64"
                 placeholder="Search Product Here..."
                 aria-label="Search Product Here..."
                 aria-describedby="basic-addon2"
@@ -82,7 +87,7 @@ const Header = () => {
               <div
                 className={
                   search
-                    ? "p-3 border-all w-[400px] min-h-[50px] absolute top-8 left-0 bg-white last:[border-bottom:none]"
+                    ? "p-3 border-all w-[400px] min-h-[50px] sm:w-[290px] absolute top-8 left-0 bg-white last:[border-bottom:none]"
                     : "hidden"
                 }
               >
@@ -99,8 +104,8 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center items-center  flex-wrap gap-5 -skew-x-[25deg] relative bg-[#1565C0]">
-            <div className="flex justify-center items-center flex-wrap gap-2 profile-img skew-x-[25deg]">
+          <div className="flex justify-center items-center sm:w-full flex-wrap gap-5 -skew-x-[25deg] relative bg-[#1565C0] sm:fixed sm:bottom-0 sm:z-50">
+            <div className="flex justify-center items-center flex-wrap gap-2 profile-img skew-x-[25deg] ">
               <img src={wishlist} alt="wishlist image" />
               <Link to="/wishlist" className=" no-underline">
                 <h5 className="text-white">
@@ -148,23 +153,33 @@ const Header = () => {
           </div>
         </div>
       </section>
+
       <section className="bg-slate-700 text-white ">
-        <div className="w-5/6 mx-auto flex gap-10 items-center">
-          <ul className="list-none flex items-center gap-5 flex-wrap min-h-14">
+        <div className="w-5/6 mx-auto flex gap-10 items-center sm:flex-col sm:mx-0 sm:py-3">
+          <div className="hidden  sm:block" onClick={hideHandler}>
+            <IoMenuSharp />
+          </div>
+          <ul
+            className={
+              open
+                ? "list-none flex items-center gap-5 flex-wrap min-h-14 sm:flex-col"
+                : "list-none flex items-center gap-5 flex-wrap min-h-14 sm:flex-col sm:hidden"
+            }
+          >
             <Link to="/" className="no-underline text-white">
-              <li>HOME</li>
+              <li onClick={() => setOpen(!open)}>HOME</li>
             </Link>
             <Link to="/ourstore" className="no-underline text-white">
-              <li>OUR STORE</li>
+              <li onClick={() => setOpen(!open)}>OUR STORE</li>
             </Link>
             <Link to="/blog" className="no-underline text-white">
-              <li>BLOGS</li>
+              <li onClick={() => setOpen(!open)}>BLOGS</li>
             </Link>
             <Link to="/contact" className="no-underline text-white">
-              <li>CONTACT</li>
+              <li onClick={() => setOpen(!open)}>CONTACT</li>
             </Link>
             <Link to="/orders" className="no-underline text-white">
-              <li>MY ORDERS</li>
+              <li onClick={() => setOpen(!open)}>MY ORDERS</li>
             </Link>
           </ul>
           <div

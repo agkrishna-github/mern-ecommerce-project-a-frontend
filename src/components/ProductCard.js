@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card p-3 flex flex-col relative gap-2 bg-white w-[300px] h-[500px]">
+    <div className="product-card p-3 flex flex-col relative gap-2 bg-white w-[300px] sm:w-full sm:p-5 h-[520px]">
       <div className="absolute top-4 right-4 " title="Add To Wish List">
         <button
           className="p-2 bg-transparent div-wish border-0 cursor-pointer"
@@ -69,7 +69,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       <p className="mt-2">Rs. {product?.price}</p>
-      <div className="hidden wishlist">
+      <div className="hidden wishlist sm:block">
         <div className="absolute top-14 right-5 flex flex-col gap-3">
           <button
             className="bg-transparent border-0 cursor-pointer"

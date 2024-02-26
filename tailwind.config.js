@@ -12,6 +12,11 @@ module.exports = {
       6: "6px",
       8: "8px",
     },
+    screens: {
+      lg: { max: "2023px" },
+
+      sm: { max: "639px" },
+    },
   },
   plugins: [],
   corePlugins: {

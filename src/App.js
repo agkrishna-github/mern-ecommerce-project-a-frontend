@@ -23,13 +23,16 @@ function App() {
           <Route index element={<Home />} />
           <Route element={<RequireAuth />}>
             <Route path="ourstore" element={<OurStore />} />
-            <Route path="product/:prodId" element={<SingleProduct />} />
-            <Route path="wishlist" element={<Wishlist />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="blog/:id" element={<SingleBlog />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<CheckOut />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="product/:prodId" element={<SingleProduct />} />
+            <Route path="checkout" element={<CheckOut />} />
+            {/*  
+            <Route path="blog/:id" element={<SingleBlog />} />
+            
+            <Route path="blog" element={<Blog />} />
+            */}
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="contact" element={<Contacts />} />

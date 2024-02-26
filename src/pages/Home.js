@@ -102,8 +102,8 @@ const Home = () => {
   return (
     <>
       <section className="bg-blue-300 py-20">
-        <div className=" w-[90%] mx-auto grid  grid-cols-2 relative gap-5">
-          <div className="relative shadow-md shadow-black bg-white rounded-md overflow-hidden">
+        <div className=" w-[90%] mx-auto grid  grid-cols-2 sm:grid-cols-1 relative gap-5 ">
+          <div className="relative shadow-md shadow-black bg-white rounded-md ">
             <Carousel autoplay>
               <div className="w-full rounded h-[400px]">
                 <img
@@ -127,7 +127,7 @@ const Home = () => {
                 />
               </div>
             </Carousel>
-            <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 ">
+            <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 sm:bottom-0">
               <p className="text-red-400">
                 {homePageDetailsState[0]?.description.substring(0, 35)}
               </p>
@@ -140,7 +140,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-8 bg-blue-950 justify-center items-center rounded-md overflow-hidden">
+          <div className="flex flex-wrap gap-8 bg-blue-950 justify-center items-center rounded-md overflow-hidden sm:flex-col sm:w-[300px] sm:p-5">
             {homePageSubDetailsState &&
               homePageSubDetailsState?.homeSubDetails?.map((item) => (
                 <div
@@ -151,7 +151,7 @@ const Home = () => {
                     <img src={item?.images} className="w-full h-full" />
                   </div>
 
-                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails">
+                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails sm:static">
                     <p className="text-red-400">{item?.subdescription}</p>
                     <h2>{item?.subtitle}</h2>
                     <p>From Rs. {item?.subprice} or</p>
@@ -161,23 +161,23 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="bg-gray-300 flex justify-center items-center h-[300px]">
+      <section className="bg-white flex justify-center items-center h-[200px] sm:hidden">
         <Services services={services} />
       </section>
 
-      <section className="bg-gray-200 pb-10">
+      <section className="bg-[#1565C0] pb-10">
         <FeaturedProduct productState={productState} />
       </section>
       <section className="bg-gray-300 pb-20">
         <SpecialProducts productState={productState} />;
       </section>
-      <section className="bg-gray-300 pb-20">
+      <section className="bg-[#1565C0] pb-20">
         <PopularProducts productState={productState} />;
       </section>
-      <section>
-        <div className="w-5/6 mx-auto p-1">
+      <section className="">
+        <div className="w-5/6 mx-auto p-1 sm:h-[100px]">
           <Marquee className="flex gap-7">
-            <div className="mx-5">
+            <div className="mx-5 sm:mb-16">
               <img src={brand1} alt="brand" />
             </div>
             <div className="mx-5">

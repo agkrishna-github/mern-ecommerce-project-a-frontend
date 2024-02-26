@@ -9,7 +9,7 @@ const Layout = () => {
     <div>
       <Header />
       <Outlet />
-      {/* <Footer /> */}
+      {/* <Footer />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -21,7 +21,7 @@ const Layout = () => {
         draggable
         pauseOnHover
         theme="light"
-      />
+      /> */}
     </div>
   );
 };

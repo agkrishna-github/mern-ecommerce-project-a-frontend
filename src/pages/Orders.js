@@ -10,16 +10,18 @@ const Orders = () => {
   }, []);
 
   const ordersState = useSelector((state) => state?.auth?.orders) || [];
-  console.log(ordersState);
   return (
-    <main>
-      <section className="w-5/6 mx-auto my-10 p-3 min-h-screen bg-gray-500">
+    <main className="bg-[#1565C0]">
+      <section className="w-5/6 mx-auto px-3 py-10 min-h-screen bg-[#1565C0]">
         {ordersState &&
           ordersState?.map((order) => (
-            <div className="bg-white w-full p-3 min-h-300px" key={order._id}>
+            <div
+              className="bg-white w-full p-3 my-3 min-h-300px border-all"
+              key={order._id}
+            >
               <h3 className="p-3">{order._id}</h3>
 
-              <div className="p-3 bg-red-400 text-white flex justify-around items-center gap-3">
+              <div className="p-3 bg-red-400 text-white flex justify-around items-center gap-3 sm:hidden">
                 <h4>Product Details</h4>
                 <h4>Price</h4>
                 <h4>Color</h4>
@@ -28,7 +30,7 @@ const Orders = () => {
               <div>
                 {order?.orderItems?.map((item) => (
                   <div key={item?._id}>
-                    <div className="flex justify-around items-center gap-3 p-10 border-all">
+                    <div className="flex justify-around items-center gap-3 p-10 border-all sm:flex-col">
                       <div className="flex justify-around items-center gap-0">
                         <div className="w-[150px] h-[150px]">
                           <img

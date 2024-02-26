@@ -7,11 +7,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import CategoryComp from "../components/CategoryComp";
 import TagComp from "../components/TagComp";
-
-import gr4 from "../images/gr4.svg";
-import gr3 from "../images/gr3.svg";
-import gr2 from "../images/gr2.svg";
-import gr from "../images/gr.svg";
+import { IoMenuSharp } from "react-icons/io5";
 import BrandComp from "../components/BrandComp";
 
 const OurStore = () => {
@@ -23,10 +19,15 @@ const OurStore = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     getProducts();
   }, []);
+
+  const asideHandler = () => {
+    setOpen(!open);
+  };
 
   const getProducts = () => {
     dispatch(getAllProductsa());
@@ -68,9 +69,22 @@ const OurStore = () => {
   ];
 
   return (
-    <main className="bg-stone-300">
-      <section className="w-5/6 mx-auto grid grid-cols-[250px_1fr] gap-5 pt-12">
-        <aside className="flex flex-col gap-3">
+    <main className="bg-[#1565C0] sm:min-h-screen">
+      <span
+        className="text-white py-5 text-2xl z-[1000] sm:absolute sm:left-5 hidden sm:block"
+        onClick={asideHandler}
+      >
+        <IoMenuSharp />
+      </span>
+      <section className="w-5/6 mx-auto grid  grid-cols-[250px_1fr] sm:grid-cols-1 gap-5 pt-12 sm:relative">
+        <aside
+          className={
+            open
+              ? "flex flex-col gap-3 sm:h-screen absolute z-50 bg-white"
+              : "flex flex-col gap-3 sm:hidden"
+          }
+          onClick={() => setOpen(!open)}
+        >
           <div className="p-3  bg-white">
             <h3 className="mb-3">Shop By Category</h3>
             <ul className="list-none">
@@ -132,9 +146,9 @@ const OurStore = () => {
           </div>
         </aside>
 
-        <article>
-          <section className="flex justify-between items-center bg-white py-4 px-2 mb-5 rounded">
-            <div className="flex justify-center items-center gap-5">
+        <article className="">
+          <section className="flex justify-between items-center bg-white py-4 px-2 mb-5 rounded ">
+            <div className="flex justify-center items-center gap-5 ">
               <p className="p-2">Sort By:</p>
               <select
                 name=""
