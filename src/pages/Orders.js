@@ -10,6 +10,7 @@ const Orders = () => {
   }, []);
 
   const ordersState = useSelector((state) => state?.auth?.orders) || [];
+  console.log(ordersState);
   return (
     <main className="bg-[#1565C0]">
       <section className="w-5/6 mx-auto px-3 py-10 min-h-screen bg-[#1565C0]">
@@ -39,10 +40,20 @@ const Orders = () => {
                             className="inline-block w-full h-full"
                           />
                         </div>
-                        <h5 className="p-3">{item?.product?.brand}</h5>
+                        {/* <h5 className="p-3">{item?.product?.title}</h5> */}
                       </div>
                       <h4 className="p-3">{item?.price}</h4>
-                      <h4 className="p-3">{item?.color}</h4>
+
+                      <h4
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                          display: "inline-block",
+                          backgroundColor: `${item?.color?.title}`,
+                        }}
+                      ></h4>
+
                       <h4 className="p-3">{item?.quantity}</h4>
                     </div>
                   </div>

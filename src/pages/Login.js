@@ -55,8 +55,8 @@ const Login = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 h-[520px]">
-      <div className="bg-[#1565C0] -skew-x-[25deg]"></div>
+    <div className="grid grid-cols-2 sm:grid-cols-1 h-[520px]">
+      <div className="bg-[#1565C0] -skew-x-[25deg] sm:hidden"></div>
       <div className="flex items-center justify-center ">
         <div className="flex flex-col gap-7 border-all p-5 w-[400px] h-[400px] rounded border-blue">
           <h2 className="text-center text-[#1565C0]">Login</h2>

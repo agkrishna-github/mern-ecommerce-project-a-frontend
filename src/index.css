@@ -127,10 +127,17 @@ body, input {
   transition: 2s ease-in-out;
 }
 
-.subDetailsImg:hover  .subDetails{
+
+.subDetailsImg:focus .subDetails{
   display: flex;
   flex-direction: column;
   gap:10px;
+   
+}
+.subDetailsImg:hover .subDetails{
+  display: flex;
+  flex-direction: column;
+  gap:10px; 
   
 }
 /* 

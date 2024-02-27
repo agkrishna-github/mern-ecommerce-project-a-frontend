@@ -128,11 +128,11 @@ const Home = () => {
               </div>
             </Carousel>
             <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 sm:bottom-0">
-              <p className="text-red-400">
+              <p className="text-red-400 font-bold">
                 {homePageDetailsState[0]?.description.substring(0, 35)}
               </p>
               <h2>{homePageDetailsState[0]?.title}</h2>
-              <p>
+              <p className="font-semibold">
                 From &nbsp;
                 <span>{homePageDetailsState[0]?.price}</span>
                 &nbsp; or
@@ -140,7 +140,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-8 bg-blue-950 justify-center items-center rounded-md overflow-hidden sm:flex-col sm:w-[300px] sm:p-5">
+          <div className="flex flex-wrap gap-8 sm:gap-20 bg-blue-950 justify-center items-center rounded-md overflow-hidden sm:flex-col sm:justify-center sm:items-center sm:w-full sm:p-5">
             {homePageSubDetailsState &&
               homePageSubDetailsState?.homeSubDetails?.map((item) => (
                 <div
@@ -151,10 +151,12 @@ const Home = () => {
                     <img src={item?.images} className="w-full h-full" />
                   </div>
 
-                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails sm:static">
+                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails sm:static font-bold">
                     <p className="text-red-400">{item?.subdescription}</p>
-                    <h2>{item?.subtitle}</h2>
-                    <p>From Rs. {item?.subprice} or</p>
+                    <h2 className="font-semibold">{item?.subtitle}</h2>
+                    <p className="font-semibold">
+                      From Rs. {item?.subprice} or
+                    </p>
                   </div>
                 </div>
               ))}

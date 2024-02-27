@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../features/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TextField, Button } from "@mui/material";
 
 const SignUp = () => {
@@ -65,7 +65,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 items-center justify-center -skew-x-[25deg] ">
+    <div className="grid grid-cols-2 sm:grid-cols-1 sm:mt-14 items-center justify-center -skew-x-[25deg] ">
       <div className="flex justify-center items-center skew-x-[25deg]">
         <div className="flex flex-col gap-7 border-all p-5 w-[400px] min-h-[300px] rounded border-blue">
           <h2 className="text-center text-[#1565C0]">Sign Up</h2>
@@ -120,10 +120,13 @@ const SignUp = () => {
               </button>
             </div>
           </form>
+          <p>
+            Already Have an Account <Link to="/login">Login</Link>
+          </p>
         </div>
       </div>
 
-      <div className="bg-[#1565C0] h-screen"></div>
+      <div className="bg-[#1565C0] h-screen sm:hidden"></div>
     </div>
   );
 };

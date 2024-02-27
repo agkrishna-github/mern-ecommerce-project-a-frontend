@@ -38,6 +38,7 @@ const CheckOut = () => {
   }, []);
 
   const cartItemsState = useSelector((state) => state?.auth?.userCart);
+  console.log(cartItemsState);
   const userOrderState = useSelector((state) => state?.auth?.orders);
   useEffect(() => {
     let totalC = 0;

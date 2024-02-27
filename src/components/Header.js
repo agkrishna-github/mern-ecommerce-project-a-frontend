@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getUserCart } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProducts } from "../features/product/productSlice";
-import { IoMenuSharp } from "react-icons/io5";
+import { ImMenu } from "react-icons/im";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -155,9 +155,9 @@ const Header = () => {
       </section>
 
       <section className="bg-slate-700 text-white ">
-        <div className="w-5/6 mx-auto flex gap-10 items-center sm:flex-col sm:mx-0 sm:py-3">
-          <div className="hidden  sm:block" onClick={hideHandler}>
-            <IoMenuSharp />
+        <div className="w-5/6 mx-auto flex gap-10 sm:justify-center sm:w-full items-center sm:flex-col sm:mx-0 sm:py-3">
+          <div className="hidden  sm:block text-3xl" onClick={hideHandler}>
+            <ImMenu />
           </div>
           <ul
             className={
@@ -172,9 +172,7 @@ const Header = () => {
             <Link to="/ourstore" className="no-underline text-white">
               <li onClick={() => setOpen(!open)}>OUR STORE</li>
             </Link>
-            <Link to="/blog" className="no-underline text-white">
-              <li onClick={() => setOpen(!open)}>BLOGS</li>
-            </Link>
+
             <Link to="/contact" className="no-underline text-white">
               <li onClick={() => setOpen(!open)}>CONTACT</li>
             </Link>
