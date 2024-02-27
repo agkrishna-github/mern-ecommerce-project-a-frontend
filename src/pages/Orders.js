@@ -10,10 +10,9 @@ const Orders = () => {
   }, []);
 
   const ordersState = useSelector((state) => state?.auth?.orders) || [];
-  console.log(ordersState);
   return (
     <main className="bg-[#1565C0]">
-      <section className="w-5/6 mx-auto px-3 py-10 min-h-screen bg-[#1565C0]">
+      <section className="w-5/6 mx-auto px-3 py-10 min-h-screen bg-[#1565C0] sm:w-full">
         {ordersState &&
           ordersState?.map((order) => (
             <div
