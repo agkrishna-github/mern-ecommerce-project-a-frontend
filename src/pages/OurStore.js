@@ -147,8 +147,8 @@ const OurStore = () => {
         </aside>
 
         <article className="">
-          <section className="flex justify-between items-center bg-white py-4 px-2 mb-5 rounded ">
-            <div className="flex justify-center items-center gap-5 ">
+          <section className="flex justify-between sm:gap-5 items-center bg-white py-4 px-2 mb-5 rounded sm:flex-col">
+            <div className="flex justify-center sm:flex-col items-center gap-5 ">
               <p className="p-2">Sort By:</p>
               <select
                 name=""
