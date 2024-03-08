@@ -37,6 +37,7 @@ import {
   getHomepageSubDetails,
 } from "../features/homepage/homepageSlice";
 import { Carousel, Popover } from "antd";
+import Loading from "../components/Loading";
 
 const contentStyle = {
   height: "160px",
@@ -69,13 +70,6 @@ const services = [
   },
 ];
 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
-
 const Home = () => {
   const dispatch = useDispatch();
 
@@ -101,111 +95,117 @@ const Home = () => {
 
   return (
     <>
-      <section className="bg-blue-300 py-20">
-        <div className=" w-[90%] mx-auto grid  grid-cols-2 sm:grid-cols-1 relative gap-5 ">
-          <div className="relative shadow-md shadow-black bg-white rounded-md ">
-            <Carousel autoplay>
-              <div className="w-full rounded h-[400px]">
-                <img
-                  src={homePageDetailsState[0]?.images[0]}
-                  className="w-[300px]"
-                  alt="main banner"
-                />
-              </div>
-              <div className="w-[400px] rounded h-[400px]">
-                <img
-                  src={homePageDetailsState[0]?.images[1]}
-                  className="w-[300px]"
-                  alt="main banner"
-                />
-              </div>
-              <div className="w-[400px] rounded h-[400px]">
-                <img
-                  src={homePageDetailsState[0]?.images[2]}
-                  className="w-[300px]"
-                  alt="main banner"
-                />
-              </div>
-            </Carousel>
-            <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 sm:bottom-0">
-              <p className="text-red-400 font-bold">
-                {homePageDetailsState[0]?.description.substring(0, 35)}
-              </p>
-              <h2>{homePageDetailsState[0]?.title}</h2>
-              <p className="font-semibold">
-                From &nbsp;
-                <span>{homePageDetailsState[0]?.price}</span>
-                &nbsp; or
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-8 sm:gap-20 bg-blue-950 justify-center items-center rounded-md overflow-hidden sm:flex-col sm:justify-center sm:items-center sm:w-full sm:p-5">
-            {homePageSubDetailsState &&
-              homePageSubDetailsState?.homeSubDetails?.map((item) => (
-                <div
-                  className="rounded-lg overflow-hidden  flex gap-3 shadow-sm shadow-black relative cursor-pointer subDetailsImg"
-                  key={item._id}
-                >
-                  <div className="w-[250px] h-[200px]">
-                    <img src={item?.images} className="w-full h-full" />
+      {productState?.length === 0 ? (
+        <Loading />
+      ) : (
+        <>
+          <section className="bg-blue-300 py-20">
+            <div className=" w-[90%] mx-auto grid  grid-cols-2 sm:grid-cols-1 relative gap-5 ">
+              <div className="relative shadow-md shadow-black bg-white rounded-md ">
+                <Carousel autoplay>
+                  <div className="w-full rounded h-[400px]">
+                    <img
+                      src={homePageDetailsState[0]?.images[0]}
+                      className="w-[300px]"
+                      alt="main banner"
+                    />
                   </div>
-
-                  <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails sm:static font-bold">
-                    <p className="text-red-400">{item?.subdescription}</p>
-                    <h2 className="font-semibold">{item?.subtitle}</h2>
-                    <p className="font-semibold">
-                      From Rs. {item?.subprice} or
-                    </p>
+                  <div className="w-[400px] rounded h-[400px]">
+                    <img
+                      src={homePageDetailsState[0]?.images[1]}
+                      className="w-[300px]"
+                      alt="main banner"
+                    />
                   </div>
+                  <div className="w-[400px] rounded h-[400px]">
+                    <img
+                      src={homePageDetailsState[0]?.images[2]}
+                      className="w-[300px]"
+                      alt="main banner"
+                    />
+                  </div>
+                </Carousel>
+                <div className="absolute p-5 w-[320px] flex flex-col gap-6 mt-7 top-0 right-0 sm:bottom-0">
+                  <p className="text-red-400 font-bold">
+                    {homePageDetailsState[0]?.description.substring(0, 35)}
+                  </p>
+                  <h2>{homePageDetailsState[0]?.title}</h2>
+                  <p className="font-semibold">
+                    From &nbsp;
+                    <span>{homePageDetailsState[0]?.price}</span>
+                    &nbsp; or
+                  </p>
                 </div>
-              ))}
-          </div>
-        </div>
-      </section>
-      <section className="bg-white flex justify-center items-center h-[200px] sm:hidden">
-        <Services services={services} />
-      </section>
+              </div>
 
-      <section className="bg-[#1565C0] pb-10">
-        <FeaturedProduct productState={productState} />
-      </section>
-      <section className="bg-gray-300 pb-20">
-        <SpecialProducts productState={productState} />;
-      </section>
-      <section className="bg-[#1565C0] pb-20">
-        <PopularProducts productState={productState} />;
-      </section>
-      <section className="">
-        <div className="w-5/6 mx-auto p-1 sm:h-[100px]">
-          <Marquee className="flex gap-7">
-            <div className="mx-5 sm:mb-16">
-              <img src={brand1} alt="brand" />
+              <div className="flex flex-wrap gap-8 sm:gap-20 bg-blue-950 justify-center items-center rounded-md overflow-hidden sm:flex-col sm:justify-center sm:items-center sm:w-full sm:p-5">
+                {homePageSubDetailsState &&
+                  homePageSubDetailsState?.homeSubDetails?.map((item) => (
+                    <div
+                      className="rounded-lg overflow-hidden  flex gap-3 shadow-sm shadow-black relative cursor-pointer subDetailsImg"
+                      key={item._id}
+                    >
+                      <div className="w-[250px] h-[200px]">
+                        <img src={item?.images} className="w-full h-full" />
+                      </div>
+
+                      <div className="w-[250px] h-[200px] px-3 py-4 absolute top-0 left-0 bg-white hidden subDetails sm:static font-bold">
+                        <p className="text-red-400">{item?.subdescription}</p>
+                        <h2 className="font-semibold">{item?.subtitle}</h2>
+                        <p className="font-semibold">
+                          From Rs. {item?.subprice} or
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
-            <div className="mx-5">
-              <img src={brand2} alt="brand" />
+          </section>
+          <section className="bg-white flex justify-center items-center h-[200px] sm:hidden">
+            <Services services={services} />
+          </section>
+
+          <section className="bg-[#1565C0] pb-10">
+            <FeaturedProduct productState={productState} />
+          </section>
+          <section className="bg-gray-300 pb-20">
+            <SpecialProducts productState={productState} />;
+          </section>
+          <section className="bg-[#1565C0] pb-20">
+            <PopularProducts productState={productState} />;
+          </section>
+          <section className="">
+            <div className="w-5/6 mx-auto p-1 sm:h-[100px]">
+              <Marquee className="flex gap-7">
+                <div className="mx-5 sm:mb-16">
+                  <img src={brand1} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand2} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand3} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand4} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand5} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand6} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand7} alt="brand" />
+                </div>
+                <div className="mx-5">
+                  <img src={brand8} alt="brand" />
+                </div>
+              </Marquee>
             </div>
-            <div className="mx-5">
-              <img src={brand3} alt="brand" />
-            </div>
-            <div className="mx-5">
-              <img src={brand4} alt="brand" />
-            </div>
-            <div className="mx-5">
-              <img src={brand5} alt="brand" />
-            </div>
-            <div className="mx-5">
-              <img src={brand6} alt="brand" />
-            </div>
-            <div className="mx-5">
-              <img src={brand7} alt="brand" />
-            </div>
-            <div className="mx-5">
-              <img src={brand8} alt="brand" />
-            </div>
-          </Marquee>
-        </div>
-      </section>
+          </section>
+        </>
+      )}
     </>
   );
 };
